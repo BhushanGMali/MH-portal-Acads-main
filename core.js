@@ -107,7 +107,6 @@ async function reloadData() {
   hideLoading();
 }
 
-
 // ── API HELPERS ────────────────────────────────────
 function apiGet(action, params = {}) {
   const qs = new URLSearchParams({ action, ...params }).toString();
