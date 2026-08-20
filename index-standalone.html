@@ -1,0 +1,3107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PW Maharashtra — Faculty Performance Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/pw-favicon.webp" type="image/webp">
+</head>
+<body>
+
+  <!--
+    STANDALONE BUILD — all HTML partials and JS are inlined below.
+    No fetch() / loader.js needed; works from file:// or any host.
+    Regenerate with: python3 build_standalone.py
+  -->
+  <!-- ===== screen-login.html (inlined) ===== -->
+<!-- ============================================================
+     screen-login.html — LOGIN SCREEN
+     Loaded into #screen-login by loader.js
+     ============================================================ -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrapper">
+    <div class="login-left">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="login-brand">
+        <img src="assets/pw-logo.webp" alt="Physics Wallah" class="pw-logo-hero">
+        <h1>Physics Wallah</h1>
+        <p class="login-tagline">Maharashtra Region — Faculty Performance Portal</p>
+      </div>
+      <div class="login-stats">
+        <div class="stat-chip"><span class="stat-num" data-count="33601">0</span><span class="stat-label">Students Tracked</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="640">0</span><span class="stat-label">Batches Live</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="402">0</span><span class="stat-label">Faculty Onboard</span></div>
+      </div>
+      <div class="login-features">
+        <div class="feature-item"><span class="feat-icon">&#128202;</span><span>Track Batch Performance</span></div>
+        <div class="feature-item"><span class="feat-icon">&#128105;&#8205;&#127891;</span><span>Faculty Productivity Insights</span></div>
+        <div class="feature-item"><span class="feat-icon">&#127919;</span><span>Student Progress Analytics</span></div>
+        <div class="feature-item"><span class="feat-icon">&#127942;</span><span>Top & Bottom Performers</span></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-logo">
+          <img src="assets/pw-logo.webp" alt="PW" class="pw-logo-sm-login">
+        </div>
+        <h2><span class="grad-head">Welcome Back</span></h2>
+        <p class="login-subtitle">Sign in to your dashboard</p>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="input-group">
+            <label for="loginId">Email or PWID</label>
+            <input type="text" id="loginId" placeholder="Enter your email or PWID" required autocomplete="username">
+          </div>
+          <div class="input-group">
+            <label for="loginPassword">Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+              <button type="button" class="pass-toggle" onclick="togglePass('loginPassword', this)" tabindex="-1">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" id="loginBtn">
+            <span>Sign In</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+        <a href="#" class="forgot-link" onclick="showScreen('forgotScreen')">Forgot Password?</a>
+        <div class="signup-link-row">
+          <span class="signup-muted">Don't have an account?</span>
+          <a href="#" class="signup-link" onclick="openSignup()">Sign Up</a>
+        </div>
+        <div id="loginError" class="alert alert-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- ===== screen-forgot.html (inlined) ===== -->
+<!-- ============================================================
+     screen-forgot.html — FORGOT PASSWORD SCREEN
+     Loaded into #screen-forgot by loader.js
+     ============================================================ -->
+<div id="forgotScreen" class="screen">
+  <div class="login-wrapper">
+    <div class="login-left">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="login-brand">
+        <img src="assets/pw-logo.webp" alt="Physics Wallah" class="pw-logo-hero">
+        <h1>Physics Wallah</h1>
+        <p class="login-tagline">Reset your password securely</p>
+      </div>
+      <div class="login-stats">
+        <div class="stat-chip"><span class="stat-num" data-count="33601">0</span><span class="stat-label">Students Tracked</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="640">0</span><span class="stat-label">Batches Live</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="402">0</span><span class="stat-label">Faculty Onboard</span></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-logo">
+          <img src="assets/pw-logo.webp" alt="PW" class="pw-logo-sm-login">
+        </div>
+        <h2><span class="grad-head">Forgot Password</span></h2>
+        <p class="login-subtitle">3 quick steps to get back in</p>
+        <div class="steps" id="forgotSteps">
+          <span class="step-dot active" data-step="1"></span>
+          <span class="step-dot" data-step="2"></span>
+          <span class="step-dot" data-step="3"></span>
+        </div>
+        <form id="forgotForm" onsubmit="handleForgot(event)">
+          <div class="input-group">
+            <label>Email or PWID</label>
+            <input type="text" id="forgotId" placeholder="Enter email or PWID" required>
+          </div>
+          <button type="submit" class="btn-primary">Send OTP</button>
+        </form>
+        <form id="otpForm" style="display:none" onsubmit="handleVerifyOTP(event)">
+          <div class="input-group">
+            <label>Enter OTP</label>
+            <input type="text" id="otpInput" placeholder="6-digit OTP" maxlength="6" required>
+          </div>
+          <button type="submit" class="btn-primary">Verify OTP</button>
+        </form>
+        <form id="resetForm" style="display:none" onsubmit="handleResetPassword(event)">
+          <div class="input-group">
+            <label>New Password</label>
+            <input type="password" id="newPassword" placeholder="Min 4 characters" required>
+          </div>
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+          </div>
+          <button type="submit" class="btn-primary">Reset Password</button>
+        </form>
+        <a href="#" class="forgot-link" onclick="showScreen('loginScreen')">&larr; Back to Login</a>
+        <div id="forgotError" class="alert alert-error"></div>
+        <div id="forgotSuccess" class="alert alert-success"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- ===== screen-signup.html (inlined) ===== -->
+<!-- ============================================================
+     screen-signup.html — SIGNUP SCREEN
+     Fields: MAIL ID, PWID, CENTER (dropdown), ROLE, Password
+     Loaded into #screen-signup by loader.js
+     ============================================================ -->
+<div id="signupScreen" class="screen">
+  <div class="login-wrapper">
+    <div class="login-left">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="login-brand">
+        <img src="assets/pw-logo.webp" alt="Physics Wallah" class="pw-logo-hero">
+        <h1>Physics Wallah</h1>
+        <p class="login-tagline">Create your account — approval required</p>
+      </div>
+      <div class="login-stats">
+        <div class="stat-chip"><span class="stat-num" data-count="33601">0</span><span class="stat-label">Students Tracked</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="640">0</span><span class="stat-label">Batches Live</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="402">0</span><span class="stat-label">Faculty Onboard</span></div>
+      </div>
+      <div class="login-features">
+        <div class="feature-item"><span class="feat-icon">&#128197;</span><span>Your request goes to your reporting manager</span></div>
+        <div class="feature-item"><span class="feat-icon">&#128233;</span><span>Approve via email buttons</span></div>
+        <div class="feature-item"><span class="feat-icon">&#9203;</span><span>Account activates after approval</span></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-logo">
+          <img src="assets/pw-logo.webp" alt="PW" class="pw-logo-sm-login">
+        </div>
+        <h2><span class="grad-head">Create Account</span></h2>
+        <p class="login-subtitle">Fill details — ID will be created after approval</p>
+        <form id="signupForm" onsubmit="handleSignup(event)">
+          <div class="input-group">
+            <label>MAIL ID</label>
+            <input type="email" id="signupEmail" placeholder="Enter your @pw.live email" required>
+            <div class="signup-hint">Only @pw.live emails can sign up</div>
+          </div>
+          <div class="input-group">
+            <label>PWID</label>
+            <input type="text" id="signupPwid" placeholder="Enter your PW ID" required>
+          </div>
+          <div class="input-group">
+            <label>CENTER</label>
+            <div class="signup-center-wrap">
+              <button type="button" class="signup-center-btn" id="signupCenterBtn" onclick="toggleSignupCenterList()">
+                <span id="signupCenterLabel">Select center(s)...</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="signup-center-list" id="signupCenterList" style="display:none">
+                <label class="center-opt center-opt-all"><input type="checkbox" id="signupCenterAll" onchange="toggleAllSignupCenters(this)"> <span>Select All</span></label>
+              </div>
+            </div>
+            <div class="signup-hint">Select one or more centers (multi-select for CH/ACH, AOM, JEE/NEET Head)</div>
+          </div>
+          <div class="input-group">
+            <label>ROLE</label>
+            <select id="signupRole" onchange="updateRoleHint()">
+              <option value="">Select role...</option>
+            </select>
+            <div class="signup-hint" id="roleHint"></div>
+          </div>
+          <div class="input-group">
+            <label>Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="signupPassword" placeholder="Min 4 characters" required>
+              <button type="button" class="pass-toggle" onclick="togglePass('signupPassword', this)" tabindex="-1">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" id="signupBtn">
+            <span>Submit for Approval</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </button>
+        </form>
+        <a href="#" class="forgot-link" onclick="showScreen('loginScreen')">&larr; Back to Login</a>
+        <div id="signupError" class="alert alert-error"></div>
+        <div id="signupSuccess" class="alert alert-success"></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- ===== screen-app.html (inlined) ===== -->
+<!-- ============================================================
+     screen-app.html — MAIN APP SCREEN
+     Top navbar + all views (dashboard, batches, batchDetail,
+     faculty, students, studentDetail).
+     Loaded into #screen-app by loader.js
+     ============================================================ -->
+<div id="appScreen" class="screen">
+  <!-- TOP NAVBAR -->
+  <header class="topnav" id="topnav">
+    <div class="topnav-left">
+      <img src="assets/pw-logo.webp" alt="PW" class="topnav-logo">
+      <div class="topnav-brand">
+        <span class="topnav-title">PW Vidyapeeth</span>
+        <span class="topnav-subtitle">Maharashtra Region</span>
+      </div>
+    </div>
+    <div class="topnav-right">
+      <span class="live-pill" title="Live data"><span class="live-dot"></span> Live</span>
+      <button class="btn-help" onclick="openHelp()" title="Help & User Guide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Help</span>
+      </button>
+      <button class="btn-request-access" onclick="openCenterChange()" title="Request access to another center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span>Request Access</span>
+      </button>
+      <button class="btn-change-center" id="reloadDataBtn" onclick="reloadData()" title="Reload Data">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9"/><polyline points="21 3 21 9 15 9"/></svg>
+        <span>Reload Data</span>
+      </button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="Toggle dark / light mode" aria-label="Toggle theme">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="topnav-user">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div class="topnav-user-info">
+          <span class="topnav-user-name" id="topbarEmail">admin@pw.live</span>
+          <span class="role-badge" id="topbarRole">Admin</span>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()" title="Sign Out">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- CENTER ACCESS REQUEST MODAL -->
+  <div class="modal-overlay" id="centerChangeModal" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Request Center Access</h3>
+        <button type="button" class="modal-close" onclick="closeCenterChange()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="cc-current">Need access to another center? Fill this form and the admin will approve it.</p>
+        <div class="req-form">
+          <div class="req-field">
+            <label class="cc-label">Mail ID</label>
+            <input type="email" class="req-input" id="reqEmail" placeholder="you@pw.live">
+          </div>
+          <div class="req-field">
+            <label class="cc-label">PW ID</label>
+            <input type="text" class="req-input" id="reqPwid" placeholder="PWID">
+          </div>
+          <div class="req-field">
+            <label class="cc-label">Center</label>
+            <select class="req-input" id="reqCenter"></select>
+          </div>
+          <div class="req-field">
+            <label class="cc-label">Remark</label>
+            <textarea class="req-input req-textarea" id="reqRemark" placeholder="Why do you need access to this center?"></textarea>
+          </div>
+        </div>
+        <div class="cc-message" id="ccMessage"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeCenterChange()">Cancel</button>
+        <button type="button" class="btn-submit" id="ccSubmitBtn" onclick="submitCenterChange()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main class="main-content">
+
+    <!-- HOME VIEW (unified) -->
+    <div id="view-home" class="view active">
+      <div class="home-error" id="homeError"></div>
+
+      <!-- FILTER PANEL -->
+      <div class="home-filters">
+        <div class="filter-row">
+          <div class="filter-group"><label>Center</label><select id="homeFilterCenter" onchange="onHomeCenterChange()"><option value="">All Centers</option></select></div>
+          <div class="filter-group"><label>Class / Stream</label><select id="homeFilterStream" onchange="onHomeStreamChange()"><option value="">All Classes</option></select></div>
+          <div class="filter-group"><label>Batch</label><select id="homeFilterBatch" onchange="onHomeBatchChange()"><option value="">All Batches</option></select></div>
+          <div class="filter-group"><label>Faculty</label><select id="homeFilterFaculty" onchange="onHomeFacultyChange()"><option value="">All Faculty</option></select></div>
+          <div class="filter-group"><label>From Date</label><input type="date" id="homeDateFrom" onchange="onHomeDateChange()"></div>
+          <div class="filter-group"><label>To Date</label><input type="date" id="homeDateTo" onchange="onHomeDateChange()"></div>
+          <div class="filter-group filter-reset"><button type="button" class="btn-reset" onclick="resetHomeFilters()">Reset</button></div>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="stats-grid home-stats">
+        <div class="stat-card stat-purple">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number stat-number-sm" id="homeKpiCenter">—</div>
+            <div class="stat-label">Center</div>
+          </div>
+        </div>
+        <div class="stat-card stat-blue">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiBatches">0</div>
+            <div class="stat-label">Total Batches</div>
+          </div>
+        </div>
+        <div class="stat-card stat-green">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiStudents">0</div>
+            <div class="stat-label">Total Students</div>
+          </div>
+        </div>
+        <div class="stat-card stat-orange">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiFaculty">0</div>
+            <div class="stat-label">Total Faculty</div>
+          </div>
+        </div>
+        <div class="stat-card stat-cyan">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiAvg">0%</div>
+            <div class="stat-label">Avg Score</div>
+          </div>
+        </div>
+        <div class="stat-card stat-teal">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiAvgStudents">0</div>
+            <div class="stat-sub" id="homeKpiAvgStudentsPct"></div>
+            <div class="stat-label">Average Students</div>
+          </div>
+        </div>
+        <div class="stat-card stat-red">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiAbsent">0</div>
+            <div class="stat-sub" id="homeKpiAbsentPct"></div>
+            <div class="stat-label">Absent Students</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOPPER / BOTTOM STUDENTS -->
+      <div class="home-grid">
+        <div class="table-card">
+          <div class="card-head">
+            <h3 class="card-title">&#127942; Topper Students</h3>
+            <div class="topn-control">
+              <label>Top <input type="number" id="topperN" value="10" min="1" max="500" onchange="onTopNChange('topper')"></label>
+              <button type="button" class="btn-download" onclick="showDownloadMenu(this,'topper')">&#11015; Download</button>
+            </div>
+          </div>
+          <div class="table-scroll table-scroll--fixed">
+            <table class="data-table">
+              <thead id="homeTopperHead"><tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th><th class="text-center">Tests Taken</th><th class="text-center">Batch Tests</th><th class="text-center">Avg Score</th><th class="text-center">Avg %</th></tr></thead>
+              <tbody id="homeTopperBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="card-head">
+            <h3 class="card-title">&#9888;&#65039; Bottom Performing Students</h3>
+            <div class="topn-control">
+              <label>Bottom <input type="number" id="bottomN" value="10" min="1" max="500" onchange="onTopNChange('bottom')"></label>
+              <button type="button" class="btn-download" onclick="showDownloadMenu(this,'bottom')">&#11015; Download</button>
+            </div>
+          </div>
+          <div class="table-scroll table-scroll--fixed">
+            <table class="data-table">
+              <thead id="homeBottomHead"><tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th><th class="text-center">Tests Taken</th><th class="text-center">Batch Tests</th><th class="text-center">Avg Score</th><th class="text-center">Avg %</th></tr></thead>
+              <tbody id="homeBottomBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEST / BOTTOM BATCH -->
+      <div class="home-grid">
+        <div class="dash-card">
+          <h3>&#127942; Best Batch</h3>
+          <div id="homeBestBatch" class="dash-list"></div>
+        </div>
+        <div class="dash-card">
+          <h3>&#9888;&#65039; Bottom Batch</h3>
+          <div id="homeBottomBatch" class="dash-list"></div>
+        </div>
+      </div>
+
+      <!-- ABSENT STUDENTS -->
+      <div class="table-card" style="margin-top:20px">
+        <div class="card-head">
+          <h3 class="card-title">&#10060; Absent Students (No papers given yet)</h3>
+          <button type="button" class="btn-download" onclick="showDownloadMenu(this,'absent')">&#11015; Download</button>
+        </div>
+        <div class="table-scroll table-scroll--fixed">
+          <table class="data-table">
+            <thead><tr><th style="width:40px">#</th><th>Name</th><th>Reg No</th><th>Stream</th><th>Batch</th><th class="text-center">Papers Not Given</th></tr></thead>
+            <tbody id="homeAbsentBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BATCH-WISE SUBJECT AVERAGE -->
+      <div class="table-card" style="margin-top:20px">
+        <div class="card-head">
+          <h3 class="card-title">&#128202; Batch-wise Subject Average (%)</h3>
+          <button type="button" class="btn-download" onclick="showDownloadMenu(this,'batchAvg')">&#11015; Download</button>
+        </div>
+        <div class="table-scroll table-scroll--fixed">
+          <table class="data-table">
+            <thead><tr><th style="width:40px">#</th><th>Batch</th><th>Center</th><th class="text-center">Avg Score</th><th class="text-center">Physics</th><th class="text-center">Chemistry</th><th class="text-center">Maths</th><th class="text-center">Zoology</th><th class="text-center">Botany</th></tr></thead>
+            <tbody id="homeBatchAvgBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUBJECT GRAPH -->
+      <div class="dash-card" style="margin-top:20px">
+        <h3>&#128200; Subject Performance</h3>
+        <div id="homeSubjectGraph"></div>
+      </div>
+    </div>
+
+    <!-- STUDENT SEARCH VIEW -->
+    <div id="view-student" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group filter-search">
+            <label>Student Reg No</label>
+            <input type="text" id="studentSearchInput" placeholder="Enter reg no..." onkeydown="if(event.key==='Enter')searchStu()">
+          </div>
+          <div class="filter-group filter-reset"><button type="button" class="btn-reset" onclick="searchStu()">Search</button></div>
+        </div>
+      </div>
+      <div class="home-error" id="studentError"></div>
+      <div id="studentResult" style="display:none">
+        <div class="detail-stats" id="studentDetailStats"></div>
+        <div class="dash-card" style="margin-top:20px">
+          <h3>&#128200; Subject-wise % per Test</h3>
+          <div id="studentSubjectGraph"></div>
+        </div>
+        <div class="table-card" style="margin-top:20px">
+          <h3 class="card-title">Test History</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead id="studentTestHead"><tr><th>Date</th><th>Type</th><th class="text-center">Total</th><th class="text-center">Score</th><th class="text-center">%</th><th class="text-center">Rank</th></tr></thead>
+              <tbody id="studentTestBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BATCHES VIEW -->
+    <div id="view-batches" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Subject</label><select id="filterSubject" onchange="applyBatchFilters()"><option value="">All Subjects</option></select></div>
+          <div class="filter-group"><label>Faculty</label><select id="filterFaculty" onchange="applyBatchFilters()"><option value="">All Faculty</option></select></div>
+          <div class="filter-group"><label>Search</label><input type="text" id="filterBatchSearch" placeholder="Search batch..." oninput="applyBatchFilters()"></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="batchTable">
+          <thead><tr><th style="width:40px">#</th><th>Batch</th><th>Subjects</th><th class="text-center">Students</th><th class="text-center">Faculty</th><th class="text-center">Avg Score</th><th class="text-center">Status</th><th>Action</th></tr></thead>
+          <tbody id="batchTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BATCH DETAIL VIEW -->
+    <div id="view-batchDetail" class="view">
+      <div class="detail-header">
+        <button class="btn-back" onclick="navigate('batches')">&larr; Back to Batches</button>
+        <h2 id="batchDetailTitle">Batch Details</h2>
+      </div>
+      <div class="detail-stats" id="batchDetailStats"></div>
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Subject</label><select id="batchDetailSubject" onchange="loadBatchDetail()"><option value="">Overall</option></select></div>
+        </div>
+      </div>
+      <div class="perf-grid" id="batchPerfGrid">
+        <div class="perf-card perf-toppers"><div class="perf-card-header"><span class="perf-icon">&#127942;</span><h4>Toppers <span class="perf-count" id="toppersCount">0</span></h4></div><div class="perf-card-body" id="toppersList"></div></div>
+        <div class="perf-card perf-average"><div class="perf-card-header"><span class="perf-icon">&#128200;</span><h4>Average <span class="perf-count" id="averageCount">0</span></h4></div><div class="perf-card-body" id="averageList"></div></div>
+        <div class="perf-card perf-bottom"><div class="perf-card-header"><span class="perf-icon">&#9888;&#65039;</span><h4>Needs Improvement <span class="perf-count" id="bottomCount">0</span></h4></div><div class="perf-card-body" id="bottomList"></div></div>
+        <div class="perf-card perf-absent"><div class="perf-card-header"><span class="perf-icon">&#10060;</span><h4>Absent <span class="perf-count" id="absentCount">0</span></h4></div><div class="perf-card-body" id="absentList"></div></div>
+      </div>
+      <div class="table-card" style="margin-top:20px">
+        <h3 style="padding:16px 20px 0;font-size:16px;color:#374151">All Students</h3>
+        <table class="data-table" id="batchStudentTable">
+          <thead><tr><th style="width:40px">#</th><th>Name</th><th>Reg No</th><th class="text-center">Score</th><th class="text-center">%</th><th class="text-center">Rank</th><th class="text-center">Tests</th></tr></thead>
+          <tbody id="batchStudentBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FACULTY VIEW -->
+    <div id="view-faculty" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Center</label><select id="filterFacCenter" onchange="applyFacultyFilters()"><option value="">All Centers</option></select></div>
+          <div class="filter-group"><label>Search</label><input type="text" id="filterFacSearch" placeholder="Search faculty..." oninput="applyFacultyFilters()"></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="facultyTable">
+          <thead><tr><th style="width:40px">#</th><th>Faculty</th><th>Center</th><th>Role</th><th class="text-center">Batches</th><th class="text-center">Students</th><th class="text-center">Avg Score</th><th>Subjects</th></tr></thead>
+          <tbody id="facultyTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STUDENTS VIEW -->
+    <div id="view-students" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Batch</label><select id="filterStuBatch" onchange="applyStudentFilters()"><option value="">All Batches</option></select></div>
+          <div class="filter-group"><label>Sort By</label><select id="filterStuSort" onchange="applyStudentFilters()"><option value="score_desc">Score (High-Low)</option><option value="score_asc">Score (Low-High)</option><option value="name">Name (A-Z)</option><option value="tests">Tests Taken</option></select></div>
+          <div class="filter-group"><label>Search</label><input type="text" id="filterStuSearch" placeholder="Search name or reg no..." oninput="applyStudentFilters()"></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="studentTable">
+          <thead><tr><th style="width:40px">#</th><th>Name</th><th>Reg No</th><th>Batch</th><th class="text-center">Tests</th><th class="text-center">Avg Score</th><th>Best Subject</th><th>Action</th></tr></thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STUDENT DETAIL VIEW -->
+    <div id="view-studentDetail" class="view">
+      <div class="detail-header">
+        <button class="btn-back" onclick="navigate('students')">&larr; Back to Students</button>
+        <h2 id="stuDetailTitle">Student Details</h2>
+      </div>
+      <div class="detail-stats" id="stuDetailStats"></div>
+      <div class="subject-bars" id="studentSubjectBars"></div>
+      <div class="table-card" style="margin-top:20px">
+        <h3 style="padding:16px 20px 0;font-size:16px;color:#374151">Test History</h3>
+        <table class="data-table" id="stuDetailTestTable">
+          <thead><tr><th>Date</th><th>Test Type</th><th class="text-center">Physics</th><th class="text-center">Chemistry</th><th class="text-center">Maths</th><th class="text-center">Zoology</th><th class="text-center">Botany</th><th class="text-center">Total</th><th class="text-center">%</th><th class="text-center">Rank</th></tr></thead>
+          <tbody id="stuDetailTestBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <span class="footer-made">This Portal is created by <strong>Ambikesh Srivastava</strong> (<a href="mailto:Ambikesh.srivastava@pw.live">Ambikesh.srivastava@pw.live</a>)</span>
+    <span class="footer-note">Kindly Connect him if any query rises.</span>
+  </footer>
+
+  <!-- HELP / USER GUIDE MODAL -->
+  <div class="modal-overlay" id="helpModal" style="display:none" onclick="if(event.target===this)closeHelp()">
+    <div class="modal modal-help">
+      <div class="modal-header">
+        <h3>&#128161; Help &amp; User Guide</h3>
+        <button type="button" class="modal-close" onclick="closeHelp()">&times;</button>
+      </div>
+      <div class="modal-body help-body">
+
+        <div class="help-section">
+          <h4>About this Portal</h4>
+          <p>This portal shows faculty and student performance for the PW Maharashtra Region. Data is pulled live from the shared Google Sheets. Everything you see changes based on the filters you pick.</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127968; Home — Filters</h4>
+          <p>The filter bar applies to <strong>everything</strong> on the Home screen (KPIs, tables, graphs):</p>
+          <ul>
+            <li><strong>Center</strong> — only the selected center's batches/students.</li>
+            <li><strong>Class / Stream</strong> — e.g. Dropper NEET, Dropper JEE.</li>
+            <li><strong>Batch</strong> — a single batch, e.g. 60-YN511CP.</li>
+            <li><strong>Faculty</strong> — only the faculty member's own batches.</li>
+            <li><strong>From / To Date</strong> — only tests between these dates.</li>
+          </ul>
+          <p>Use <strong>Reset</strong> to clear everything back to All.</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128202; Home — KPI Cards</h4>
+          <ul>
+            <li><strong>Center</strong> — which center(s) you are viewing.</li>
+            <li><strong>Total Batches</strong> — batches that had at least one test.</li>
+            <li><strong>Total Students</strong> — students who gave at least one test.</li>
+            <li><strong>Total Faculty</strong> — faculty mapped to the visible batches.</li>
+            <li><strong>Avg Score</strong> — average of every test's percentage (marks %).</li>
+            <li><strong>Average Students</strong> — students whose average is within &#177;5% of the overall average (the % below = share of total students).</li>
+            <li><strong>Absent Students</strong> — students who gave no test in the selected scope (the % below = share of total students).</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127942; Home — Topper &amp; Bottom Students</h4>
+          <p>Lists the students with the highest / lowest average percentage.</p>
+          <ul>
+            <li><strong>Top / Bottom &lt;number&gt;</strong> — type any number (1-500) to see that many students; default is 10.</li>
+            <li><strong>Tests</strong> — how many tests that student gave.</li>
+            <li><strong>Avg %</strong> — average of the student's test percentages. Subject columns show the latest test's subject marks.</li>
+            <li>Download (&#11015;) exports the currently visible list.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127942; Home — Best / Bottom Batch</h4>
+          <p>The batch with the highest / lowest average percentage, plus its top 3 students.</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#10060; Home — Absent Students</h4>
+          <p>Students whose batch had a test but who gave <strong>no test</strong> in the selected scope.</p>
+          <ul>
+            <li><strong>Papers Not Given</strong> — how many of the batch's tests they missed.</li>
+            <li>Name / stream come from the Students sheet.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128202; Home — Batch-wise Subject Average</h4>
+          <p>For every batch: its overall average percentage plus each subject's share.</p>
+          <ul>
+            <li>Subject % = that subject's marks &#247; total score &#215; 100, averaged across the batch's tests.</li>
+            <li>A NEET batch shows Maths as 0% because NEET papers have no Maths.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128200; Home — Subject Performance Graph</h4>
+          <p>Per test date, the average of each student's subject share (subject marks &#247; score &#215; 100).</p>
+          <ul>
+            <li>Hover any point to see the date, the <strong>average score</strong> of that test and each subject's %.</li>
+            <li>Faculty users only see their own subjects.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128269; Student — Single Lookup</h4>
+          <p>Enter a registration number and press Search to see that student's performance graph and full test history (date, type, total, score, %, rank).</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128218; Batches</h4>
+          <p>List of batches with their subjects, student count, faculty count and average score.</p>
+          <ul>
+            <li>Filters: <strong>Subject</strong>, <strong>Faculty</strong>, <strong>Search</strong>.</li>
+            <li>Click <strong>View</strong> on a batch to open its detail page: Toppers / Average / Needs Improvement / Absent cards plus the full student list with ranks.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128105;&#8205;&#127891; Faculty</h4>
+          <p>List of faculty with their batches, subjects and centers.</p>
+          <ul>
+            <li>Filters: <strong>Center</strong>, <strong>Search</strong>.</li>
+            <li>Faculty accounts only see their own batches and subjects everywhere in the portal.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127919; Students</h4>
+          <p>List of all students with tests given, average score and best subject.</p>
+          <ul>
+            <li>Filters: <strong>Batch</strong>, <strong>Sort By</strong> (score / name / tests), <strong>Search</strong>.</li>
+            <li>Click a student to open their detail page: stats, subject bars and test history.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#129518; How Calculations Work</h4>
+          <ul>
+            <li><strong>Student Avg %</strong> = average of the student's test percentages (marks % column).</li>
+            <li><strong>Batch Avg %</strong> = average of all its students' test percentages.</li>
+            <li><strong>Subject %</strong> = subject marks &#247; total score &#215; 100 (per test, averaged per student).</li>
+            <li><strong>Tests</strong> = tests with a score above zero.</li>
+            <li><strong>Rank</strong> = position by score within the test / batch.</li>
+            <li><strong>Average Students</strong> = students within &#177;5% of the overall average score.</li>
+          </ul>
+        </div>
+
+        <div class="help-section help-credit">
+          <p>This Portal is created by <strong>Ambikesh Srivastava</strong> (<a href="mailto:Ambikesh.srivastava@pw.live">Ambikesh.srivastava@pw.live</a>).</p>
+          <p>Kindly Connect him if any query rises.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#" class="mobile-nav-link active" data-view="home" onclick="navigate('home')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="#" class="mobile-nav-link" data-view="student" onclick="navigate('student')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
+      <span>Student</span>
+    </a>
+  </nav>
+</div>
+  <!-- ===== overlay.html (inlined) ===== -->
+<!-- ============================================================
+     overlay.html — LOADING OVERLAY
+     Loaded into #screen-overlay by loader.js
+     ============================================================ -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none">
+  <div class="loader">
+    <div class="loader-spinner"></div>
+    <p>Loading data...</p>
+  </div>
+</div>
+  <script>
+/* ===== core.js ===== */
+// ============================================================
+//  PW Maharashtra Region — Faculty Performance Portal
+//  core.js — API base, shared state, navigation, API helpers,
+//            utilities, and auto-login.
+//  Load this file FIRST (before auth/dashboard/batches/faculty/
+//  students/perf).
+// ============================================================
+
+const API_BASE = 'https://script.google.com/macros/s/AKfycby_nKOz_ZGPiWMwmAYEtseq1oPydueeSOOzMseOtFIGK-cgPUPidoP_8I4dvd5AwENQ/exec';
+
+// ── SHARED STATE ────────────────────────────────────
+let user = null;
+let dashData = null;
+let batchesData = [];
+let facultyData = [];
+let studentsData = [];
+let currentView = 'home';
+let currentBatch = null;
+let backendVersion = 'unknown'; // 'old' or 'new'
+
+// ── THEME (dark / light) ───────────────────────────
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  try { localStorage.setItem('pw_theme', theme); } catch (_) {}
+}
+function initTheme() {
+  let saved = 'dark';
+  try { saved = localStorage.getItem('pw_theme') || 'dark'; } catch (_) {}
+  applyTheme(saved);
+}
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+// ── SCREEN NAVIGATION ──────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  // Reset the forgot-password step indicator when the screen reopens
+  if (id === 'forgotScreen' && typeof setForgotStep === 'function') setForgotStep(1);
+}
+
+// ── HELP / USER GUIDE ──────────────────────────────
+function openHelp() {
+  document.getElementById('helpModal').style.display = 'flex';
+  const body = document.querySelector('.modal-help .help-body');
+  if (body) body.scrollTop = 0;
+}
+function closeHelp() {
+  document.getElementById('helpModal').style.display = 'none';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('helpModal');
+    if (m && m.style.display === 'flex') closeHelp();
+  }
+});
+
+// ── NAVIGATION ─────────────────────────────────────
+function navigate(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.topnav-link').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav-link').forEach(n => n.classList.remove('active'));
+
+  const viewEl = document.getElementById('view-' + view);
+  const navEl = document.querySelector(`.topnav-link[data-view="${view}"]`);
+  const mobEl = document.querySelector(`.mobile-nav-link[data-view="${view}"]`);
+  if (viewEl) viewEl.classList.add('active');
+  if (navEl) navEl.classList.add('active');
+  if (mobEl) mobEl.classList.add('active');
+
+  // Load data for the view (render immediately if already loaded)
+  if (view === 'home') loadHome();
+  if (view === 'student') loadStuView();
+  if (view === 'dashboard' && !dashData) loadDashboard();
+  if (view === 'batches') {
+    if (batchesData.length === 0) loadBatches();
+    else { populateBatchFilters(); renderBatches(batchesData); }
+  }
+  if (view === 'faculty') {
+    if (facultyData.length === 0) loadFaculty();
+    else { populateFacultyFilters(); renderFaculty(facultyData); }
+  }
+  if (view === 'students') {
+    if (studentsData.length === 0) loadStudents();
+    else { populateStudentFilters(); renderStudents(studentsData); }
+  }
+}
+
+// ── DATA RELOAD ────────────────────────────────────
+// Force-refetch the published CSVs and re-render the current view.
+async function reloadData() {
+  showLoading();
+  try {
+    if (typeof loadData === 'function') await loadData(true);
+    if (currentView === 'home') renderHome();
+    else if (currentView === 'student') loadStuView();
+    else if (currentView === 'dashboard') loadDashboard();
+    else if (currentView === 'batches') loadBatches();
+    else if (currentView === 'faculty') loadFaculty();
+    else if (currentView === 'students') loadStudents();
+  } catch (e) {
+    console.error('Reload error:', e);
+  }
+  hideLoading();
+}
+
+// ── API HELPERS ────────────────────────────────────
+function apiGet(action, params = {}) {
+  const qs = new URLSearchParams({ action, ...params }).toString();
+  return fetch(`${API_BASE}?${qs}`).then(r => r.text()).then(parseApiResponse)
+    .catch(err => {
+      if (err && err.message === 'HTML_RESPONSE') {
+        // Retry once — Apps Script redirect usually resolves on 2nd call
+        return fetch(`${API_BASE}?${qs}`).then(r => r.text()).then(parseApiResponse);
+      }
+      throw err;
+    });
+}
+
+function apiPost(action, body) {
+  return fetch(API_BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, ...body })
+  }).then(r => r.text()).then(parseApiResponse)
+    .catch(err => {
+      if (err && err.message === 'HTML_RESPONSE') {
+        return fetch(API_BASE, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action, ...body })
+        }).then(r => r.text()).then(parseApiResponse);
+      }
+      throw err;
+    });
+}
+
+// Apps Script web apps sometimes return an HTML interstitial page on the
+// first request (302 redirect). Retry once, and parse JSON if possible.
+function parseApiResponse(text) {
+  try {
+    return JSON.parse(text);
+  } catch (_) {
+    // HTML page returned — retry the same request once
+    throw new Error('HTML_RESPONSE');
+  }
+}
+
+function showLoading() { document.getElementById('loadingOverlay').style.display = 'flex'; }
+function hideLoading() { document.getElementById('loadingOverlay').style.display = 'none'; }
+
+function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.classList.add('show'); }
+function hideAlert(id) { document.getElementById(id).classList.remove('show'); }
+
+// ── UTILITIES ──────────────────────────────────────
+function fillSelect(id, items, defaultLabel) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  const first = sel.options[0];
+  sel.innerHTML = '';
+  sel.appendChild(first);
+  items.forEach(item => {
+    const opt = document.createElement('option');
+    opt.value = item;
+    opt.textContent = item;
+    sel.appendChild(opt);
+  });
+}
+
+function scoreBadge(score) {
+  if (score >= 75) return 'status-excellent';
+  if (score >= 60) return 'status-good';
+  if (score >= 40) return 'status-average';
+  return 'status-poor';
+}
+
+function scoreLabel(score) {
+  if (score >= 75) return 'Excellent';
+  if (score >= 60) return 'Good';
+  if (score >= 40) return 'Average';
+  return 'Needs Work';
+}
+
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
+
+function togglePass(id, btn) {
+  const inp = document.getElementById(id);
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+  } else {
+    inp.type = 'password';
+    btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+  }
+}
+
+// ── AUTO-LOGIN ─────────────────────────────────────
+// Wait for loader.js to inject all HTML partials before booting.
+document.addEventListener('pw:html-ready', () => {
+  initTheme();
+  const saved = localStorage.getItem('pw_user');
+  if (saved) {
+    try {
+      user = JSON.parse(saved);
+      if (user && user.email) {
+        if (!user.level && user.hierarchyLevel) user.level = user.hierarchyLevel;
+        initApp(); return;
+      }
+    } catch (_) {}
+    localStorage.removeItem('pw_user');
+  }
+});
+
+/* ===== auth.js ===== */
+// ============================================================
+//  auth.js — Login, Forgot Password, Signup, Logout, initApp,
+//            and the center switcher.
+//  Depends on: core.js (apiGet, apiPost, showScreen, navigate,
+//              showError, hideAlert, esc, user state)
+// ============================================================
+
+// ── AUTH SCREEN ANIMATIONS ─────────────────────────
+// Count-up animation for .stat-num[data-count] chips on the auth screens
+function animateCounters() {
+  document.querySelectorAll('.stat-num[data-count]').forEach(el => {
+    const target = parseInt(el.dataset.count, 10) || 0;
+    const dur = 1400;
+    const t0 = performance.now();
+    function tick(now) {
+      const p = Math.min((now - t0) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased).toLocaleString('en-IN');
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+// Forgot-password step indicator (1 = email, 2 = OTP, 3 = new password)
+function setForgotStep(step) {
+  document.querySelectorAll('#forgotSteps .step-dot').forEach(d => {
+    d.classList.toggle('active', parseInt(d.dataset.step, 10) <= step);
+  });
+}
+
+// Run counter animation once the auth screens are in the DOM
+// (covers both the standalone build and loader.js multi-file mode)
+function bootAuthAnimations() {
+  if (document.querySelector('.stat-num[data-count]')) animateCounters();
+}
+document.addEventListener('DOMContentLoaded', bootAuthAnimations);
+document.addEventListener('pw:html-ready', bootAuthAnimations);
+
+// ── LOGIN ──────────────────────────────────────────
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  const identifier = document.getElementById('loginId').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  if (!identifier || !password) { showError('loginError', 'Please fill all fields'); return; }
+
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Signing in...';
+  hideAlert('loginError');
+
+  try {
+    const resp = await apiGet('login', { identifier, password });
+    if (resp.success) {
+      user = resp.data;
+      // Backward compatibility
+      if (!user.level && user.hierarchyLevel) user.level = user.hierarchyLevel;
+      localStorage.setItem('pw_user', JSON.stringify(user));
+      initApp();
+    } else {
+      showError('loginError', resp.message);
+    }
+  } catch (_) {
+    showError('loginError', 'Connection error. Please try again.');
+  }
+
+  btn.disabled = false;
+  btn.querySelector('span').textContent = 'Sign In';
+}
+
+// ── FORGOT PASSWORD ────────────────────────────────
+async function handleForgot(e) {
+  e.preventDefault();
+  hideAlert('forgotError'); hideAlert('forgotSuccess');
+  const id = document.getElementById('forgotId').value.trim();
+  if (!id) { showError('forgotError', 'Enter email or PWID'); return; }
+
+  try {
+    const resp = await apiGet('forgotPassword', { identifier: id });
+    if (resp.success) {
+      document.getElementById('forgotSuccess').textContent = 'OTP sent to ' + resp.data.email;
+      document.getElementById('forgotSuccess').classList.add('show');
+      document.getElementById('otpForm').style.display = 'block';
+      setForgotStep(2);
+    } else {
+      showError('forgotError', resp.message);
+    }
+  } catch (_) { showError('forgotError', 'Connection error'); }
+}
+
+async function handleVerifyOTP(e) {
+  e.preventDefault();
+  hideAlert('forgotError'); hideAlert('forgotSuccess');
+  const id = document.getElementById('forgotId').value.trim();
+  const otp = document.getElementById('otpInput').value.trim();
+  if (!otp || otp.length !== 6) { showError('forgotError', 'Enter valid 6-digit OTP'); return; }
+
+  try {
+    const resp = await apiGet('verifyOTP', { identifier: id, otp });
+    if (resp.success) {
+      document.getElementById('forgotSuccess').textContent = 'OTP verified! Set new password.';
+      document.getElementById('forgotSuccess').classList.add('show');
+      document.getElementById('otpForm').style.display = 'none';
+      document.getElementById('resetForm').style.display = 'block';
+      setForgotStep(3);
+    } else { showError('forgotError', resp.message); }
+  } catch (_) { showError('forgotError', 'Connection error'); }
+}
+
+async function handleResetPassword(e) {
+  e.preventDefault();
+  hideAlert('forgotError'); hideAlert('forgotSuccess');
+  const id = document.getElementById('forgotId').value.trim();
+  const np = document.getElementById('newPassword').value.trim();
+  const cp = document.getElementById('confirmPassword').value.trim();
+  if (np.length < 4) { showError('forgotError', 'Password too short (min 4)'); return; }
+  if (np !== cp) { showError('forgotError', 'Passwords do not match'); return; }
+
+  try {
+    const resp = await apiPost('resetPassword', { identifier: id, newPassword: np });
+    if (resp.success) {
+      document.getElementById('forgotSuccess').textContent = 'Password updated! Redirecting...';
+      document.getElementById('forgotSuccess').classList.add('show');
+      setTimeout(() => {
+        document.getElementById('resetForm').style.display = 'none';
+        document.getElementById('otpForm').style.display = 'none';
+        setForgotStep(1);
+        showScreen('loginScreen');
+      }, 1500);
+    } else { showError('forgotError', resp.message); }
+  } catch (_) { showError('forgotError', 'Connection error'); }
+}
+
+// ── SIGNUP ─────────────────────────────────────────
+function openSignup() {
+  showScreen('signupScreen');
+  hideAlert('signupError'); hideAlert('signupSuccess');
+  document.getElementById('signupForm').reset();
+  document.getElementById('signupSuccess').style.display = 'none';
+  loadSignupOptions();
+}
+
+async function loadSignupOptions() {
+  try {
+    const resp = await apiGet('getSignupOptions');
+    if (resp.success) {
+      // Populate centers as a multi-select checkbox list
+      const list = document.getElementById('signupCenterList');
+      if (list) {
+        list.innerHTML = '<label class="center-opt center-opt-all"><input type="checkbox" id="signupCenterAll" onchange="toggleAllSignupCenters(this)"> <span>Select All</span></label>' +
+          resp.data.centers.map(c => '<label class="center-opt"><input type="checkbox" value="' + esc(c) + '"> <span>' + esc(c) + '</span></label>').join('');
+      }
+
+      // Populate roles
+      const roleSel = document.getElementById('signupRole');
+      roleSel.innerHTML = '<option value="">Select role...</option>' +
+        resp.data.roles.map(r => '<option value="' + esc(r) + '">' + esc(r) + '</option>').join('');
+    }
+  } catch (_) {}
+}
+
+// ── SIGNUP CENTER MULTI-SELECT ──────────────────────
+function toggleSignupCenterList() {
+  const list = document.getElementById('signupCenterList');
+  if (list) list.style.display = list.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleAllSignupCenters(cb) {
+  document.querySelectorAll('#signupCenterList input[value]').forEach(i => i.checked = cb.checked);
+  updateSignupCenterLabel();
+}
+
+function updateSignupCenterLabel() {
+  const sel = [...document.querySelectorAll('#signupCenterList input[value]:checked')].map(i => i.value);
+  const label = document.getElementById('signupCenterLabel');
+  const total = document.querySelectorAll('#signupCenterList input[value]').length;
+  if (!label) return;
+  if (sel.length === 0) label.textContent = 'Select center(s)...';
+  else if (sel.length === total) label.textContent = 'All Centers';
+  else if (sel.length === 1) label.textContent = sel[0];
+  else label.textContent = sel.length + ' centers selected';
+}
+
+function getSelectedSignupCenters() {
+  return [...document.querySelectorAll('#signupCenterList input[value]:checked')].map(i => i.value);
+}
+
+function resetSignupCenters() {
+  const list = document.getElementById('signupCenterList');
+  if (!list) return;
+  document.querySelectorAll('#signupCenterList input[value]').forEach(i => i.checked = false);
+  list.style.display = 'none';
+  updateSignupCenterLabel();
+}
+
+function updateRoleHint() {
+  const role = document.getElementById('signupRole').value;
+  const hints = {
+    'Faculty': 'Approval goes to your AOM',
+    'Subject Head': 'Approval goes to your AOM',
+    'AOM': 'Approval goes to your CH/ACH',
+    'CH/ACH': 'Approval goes to your RAOM',
+    'RAOM': 'Approval goes to your RAH',
+    'RAH': 'Approval goes to the Admin'
+  };
+  document.getElementById('roleHint').textContent = hints[role] || '';
+}
+
+async function handleSignup(e) {
+  e.preventDefault();
+  hideAlert('signupError'); hideAlert('signupSuccess');
+  const btn = document.getElementById('signupBtn');
+  const email = document.getElementById('signupEmail').value.trim();
+  const pwid = document.getElementById('signupPwid').value.trim();
+  const center = getSelectedSignupCenters().join(',');
+  const role = document.getElementById('signupRole').value;
+  const password = document.getElementById('signupPassword').value.trim();
+
+  if (!email) { showError('signupError', 'MAIL ID required'); return; }
+  if (!email.endsWith('@pw.live')) { showError('signupError', 'Only @pw.live emails can sign up'); return; }
+  if (!pwid) { showError('signupError', 'PWID required'); return; }
+  if (!center) { showError('signupError', 'Select at least one center'); return; }
+  if (!role) { showError('signupError', 'Select a role'); return; }
+  if (password.length < 4) { showError('signupError', 'Password must be at least 4 characters'); return; }
+
+  btn.disabled = true;
+  btn.querySelector('span').textContent = 'Submitting...';
+
+  try {
+    // Send BOTH params for backward compatibility:
+    //   center  → new backend (comma-separated centers)
+    //   centers → old deployed backend (comma-separated list)
+    const resp = await apiGet('signup', { email, pwid, center, centers: center, role, password });
+    if (resp.success) {
+      document.getElementById('signupSuccess').textContent = resp.message;
+      document.getElementById('signupSuccess').classList.add('show');
+      document.getElementById('signupForm').reset();
+      resetSignupCenters();
+    } else {
+      showError('signupError', resp.message);
+    }
+  } catch (_) { showError('signupError', 'Connection error'); }
+
+  btn.disabled = false;
+  btn.querySelector('span').textContent = 'Submit for Approval';
+}
+
+// ── INIT APP ───────────────────────────────────────
+function initApp() {
+  if (!user.level && user.hierarchyLevel) user.level = user.hierarchyLevel;
+  showScreen('appScreen');
+  document.getElementById('userAvatar').textContent = user.email.charAt(0).toUpperCase();
+  document.getElementById('topbarEmail').textContent = user.email;
+  document.getElementById('topbarRole').textContent = user.role;
+  dashData = null;
+  batchesData = [];
+  facultyData = [];
+  studentsData = [];
+  navigate('home');
+}
+
+// ── CENTER ACCESS REQUEST ─────────────────────────
+async function openCenterChange() {
+  hideAlert('ccMessage');
+  document.getElementById('ccMessage').classList.remove('show');
+  // Pre-fill the requester's details (mail id / pw id already known)
+  document.getElementById('reqEmail').value = user.email || '';
+  document.getElementById('reqPwid').value = user.pwid || '';
+  document.getElementById('reqRemark').value = '';
+  document.getElementById('ccSubmitBtn').disabled = false;
+  document.getElementById('ccSubmitBtn').textContent = 'Submit Request';
+  document.getElementById('centerChangeModal').style.display = 'flex';
+  // Populate center list from local data first (works offline), fall back to API.
+  const localCenters = (typeof allCenters === 'function') ? allCenters() : [];
+  const current = (user.center || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (localCenters.length) {
+    document.getElementById('reqCenter').innerHTML = localCenters.map(c => {
+      return '<option value="' + esc(c) + '"' + (current.includes(c) ? ' selected' : '') + '>' + esc(c) + '</option>';
+    }).join('');
+    return;
+  }
+  try {
+    const resp = await apiGet('getSignupOptions');
+    if (resp.success) {
+      document.getElementById('reqCenter').innerHTML = resp.data.centers.map(c => {
+        return '<option value="' + esc(c) + '"' + (current.includes(c) ? ' selected' : '') + '>' + esc(c) + '</option>';
+      }).join('');
+    }
+  } catch (_) {}
+}
+
+function closeCenterChange() {
+  document.getElementById('centerChangeModal').style.display = 'none';
+}
+
+async function submitCenterChange() {
+  const email = document.getElementById('reqEmail').value.trim();
+  const pwid = document.getElementById('reqPwid').value.trim();
+  const center = document.getElementById('reqCenter').value;
+  const remark = document.getElementById('reqRemark').value.trim();
+  const msgEl = document.getElementById('ccMessage');
+  msgEl.classList.remove('error');
+  if (!center) { showError('ccMessage', 'Select a center'); msgEl.classList.add('error'); return; }
+  const btn = document.getElementById('ccSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  try {
+    const resp = await apiGet('requestCenterChange', { email, pwid, newCenter: center, remark });
+    if (resp.success) {
+      msgEl.textContent = resp.message;
+      msgEl.classList.add('show');
+      btn.textContent = 'Submitted';
+    } else {
+      showError('ccMessage', resp.message);
+      msgEl.classList.add('error');
+      btn.disabled = false;
+      btn.textContent = 'Submit Request';
+    }
+  } catch (_) {
+    showError('ccMessage', 'Connection error');
+    msgEl.classList.add('error');
+    btn.disabled = false;
+    btn.textContent = 'Submit Request';
+  }
+}
+
+// ── LOGOUT ─────────────────────────────────────────
+function handleLogout() {
+  user = null;
+  dashData = null;
+  batchesData = [];
+  facultyData = [];
+  studentsData = [];
+  backendVersion = 'unknown';
+  localStorage.removeItem('pw_user');
+  document.getElementById('loginId').value = '';
+  document.getElementById('loginPassword').value = '';
+  showScreen('loginScreen');
+}
+
+/* ===== data.js ===== */
+// ============================================================
+//  data.js — PUBLISHED-CSV DATA LAYER
+//  Fetches the three published Google-Sheets CSVs directly in the
+//  browser (no Apps Script backend for data), parses them, caches
+//  them, and computes everything the unified Home view needs:
+//  KPIs, toppers/bottom students, best/bottom batches, and the
+//  per-subject average graph.
+//
+//  Depends on: core.js (user state)
+//  Load AFTER core.js, BEFORE home.js
+// ============================================================
+
+const CSV_URLS = {
+  tests:    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?output=csv&gid=475005675',
+  fbm:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?output=csv&gid=0',
+  students: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?gid=93108683&single=true&output=csv'
+};
+
+// Subject columns in the Test Result CSV (0-indexed)
+const SUBJ_COLS = { physics: 14, chemistry: 15, maths: 16, zoology: 17, botany: 18 };
+const SUBJ_NAMES = ['physics', 'chemistry', 'maths', 'zoology', 'botany'];
+const SUBJ_LABELS = { physics: 'Physics', chemistry: 'Chemistry', maths: 'Maths', zoology: 'Zoology', botany: 'Botany' };
+
+// ── STATE ────────────────────────────────────────────
+let DATA = { tests: [], fbm: [], students: [], loaded: false, loading: false };
+
+// ── CSV PARSER (handles quoted fields, commas, escaped quotes) ──
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else {
+      if (c === '"') inQuotes = true;
+      else if (c === ',') { row.push(field); field = ''; }
+      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else if (c === '\r') { /* skip CR */ }
+      else field += c;
+    }
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+// Convert parsed rows (first row = header) into array of objects.
+function rowsToObjects(rows) {
+  if (!rows.length) return [];
+  const header = rows[0].map(h => String(h).trim());
+  const out = [];
+  for (let i = 1; i < rows.length; i++) {
+    const r = rows[i];
+    if (r.length === 1 && r[0] === '') continue; // skip blank lines
+    const obj = {};
+    for (let j = 0; j < header.length; j++) obj[header[j]] = (r[j] !== undefined ? r[j] : '');
+    out.push(obj);
+  }
+  return out;
+}
+
+async function fetchCSV(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('CSV fetch failed: HTTP ' + res.status);
+  return rowsToObjects(parseCSV(await res.text()));
+}
+
+// Load all three CSVs once, then cache. Returns a promise.
+function loadData(force) {
+  if (DATA.loaded && !force) return Promise.resolve(DATA);
+  if (DATA.loading) return DATA.loading;
+  DATA.loading = (async () => {
+    const [tests, fbm, students] = await Promise.all([
+      fetchCSV(CSV_URLS.tests),
+      fetchCSV(CSV_URLS.fbm),
+      fetchCSV(CSV_URLS.students)
+    ]);
+    DATA.tests = tests;
+    DATA.fbm = fbm;
+    DATA.students = students;
+    DATA.loaded = true;
+    DATA.loading = false;
+    return DATA;
+  })();
+  return DATA.loading;
+}
+
+// ── PARSING HELPERS ──────────────────────────────────
+// markspercent arrives as "48.00%" (string with %). Return number.
+function parsePct(s) {
+  const n = parseFloat(String(s).replace('%', '').trim());
+  return isNaN(n) ? 0 : n;
+}
+function parseNum(s) {
+  const n = parseFloat(String(s).trim());
+  return isNaN(n) ? 0 : n;
+}
+// _date arrives as "9 Aug, 2026". Date inputs arrive as "2026-08-09".
+// Return a Date or null.
+function parseTestDate(s) {
+  const str = String(s).trim();
+  if (!str) return null;
+  // ISO "YYYY-MM-DD" (from <input type="date">)
+  const iso = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (iso) return new Date(+iso[1], +iso[2] - 1, +iso[3]);
+  // "9 Aug, 2026"
+  const m = str.match(/(\d{1,2})\s+([A-Za-z]+),?\s+(\d{4})/);
+  if (!m) return null;
+  const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+  const mon = months[m[2].slice(0, 3)];
+  if (mon === undefined) return null;
+  return new Date(+m[3], mon, +m[1]);
+}
+
+// ── ROLE / CENTER SCOPING ────────────────────────────
+// Centers the current user is allowed to see.
+function accessibleCenters() {
+  if (user.level >= 5) return allCenters();
+  const centers = user.centers && user.centers.length ? user.centers
+    : (user.center ? user.center.split(',').map(s => s.trim()).filter(Boolean) : []);
+  return centers;
+}
+
+function allCenters() {
+  const set = new Set();
+  DATA.fbm.forEach(r => { if (r.Center) set.add(r.Center); });
+  return [...set];
+}
+
+// Subjects a Faculty teaches (mapped to Test Result columns).
+function facultySubjects(email) {
+  const subs = new Set();
+  DATA.fbm.forEach(r => {
+    if (r.MailID && r.MailID.trim().toLowerCase() === String(email).toLowerCase()) {
+      const s = r.Subject;
+      if (SUBJ_LABELS[s.toLowerCase()]) subs.add(s.toLowerCase());
+    }
+  });
+  return [...subs];
+}
+
+// Batches a Faculty teaches (from FBM MailID).
+function facultyBatches(email) {
+  const set = new Set();
+  const e = String(email || '').toLowerCase();
+  DATA.fbm.forEach(r => {
+    if (r.MailID && r.Batch && r.MailID.trim().toLowerCase() === e) set.add(r.Batch);
+  });
+  return [...set];
+}
+
+// Streams a Faculty teaches — streams of students enrolled in their batches.
+function facultyStreams(email) {
+  const batches = new Set(facultyBatches(email));
+  const streams = new Set();
+  DATA.students.forEach(r => {
+    if (r.batch && batches.has(r.batch) && r.class_course) streams.add(normStream(r.class_course));
+  });
+  return [...streams];
+}
+
+// Subjects a student studies, based on their stream.
+// NEET → no Maths; JEE & Foundation → no Zoology/Botany.
+function streamSubjects(stream) {
+  const s = String(stream || '');
+  if (s.includes('NEET')) return ['physics', 'chemistry', 'zoology', 'botany'];
+  return ['physics', 'chemistry', 'maths'];
+}
+
+// Normalize a class/stream string so "12th NEET" matches "12 NEET".
+function normStream(s) {
+  return String(s || '').replace(/\b(\d+)(st|nd|rd|th)\b/gi, '$1').trim();
+}
+
+// Center name for a batch (from FBM). Returns '' if unknown.
+// Cached map so rendering thousands of rows stays fast.
+let _batchCenterMap = null;
+function batchCenterName(batch) {
+  if (!batch) return '';
+  if (!_batchCenterMap) {
+    _batchCenterMap = {};
+    DATA.fbm.forEach(r => { if (r.Batch && !_batchCenterMap[r.Batch]) _batchCenterMap[r.Batch] = r.Center || ''; });
+  }
+  return _batchCenterMap[batch] || '';
+}
+
+// ── HOME COMPUTATION ─────────────────────────────────
+// filters: { centers:[], stream:'', batch:'', faculty:'', dateFrom:'', dateTo:'' }
+// Returns KPIs, toppers, bottom, best/bottom batch, subject graph,
+// and the filter option lists.
+function computeHome(filters) {
+  const centers = filters.centers && filters.centers.length ? filters.centers : allCenters();
+  const centerSet = new Set(centers);
+
+  // Faculty role (level <= 1): they may ONLY see their own batches.
+  const roleBatches = (user.level <= 1) ? new Set(facultyBatches(user.email)) : null;
+
+  // faculty (filter) → batches map from FBM.
+  const facultyBatchMap = {};
+  DATA.fbm.forEach(r => {
+    if (r.MailID && r.Batch) {
+      const key = r.MailID.trim().toLowerCase();
+      if (!facultyBatchMap[key]) facultyBatchMap[key] = new Set();
+      facultyBatchMap[key].add(r.Batch);
+    }
+  });
+
+  // 1) batch → center mapping from FBM (ONLY for center scoping).
+  //    FBM is NOT used for batch/student counts — only to know which
+  //    faculty teaches which subject in which batch.
+  const batchCenter = {};
+  DATA.fbm.forEach(r => { if (r.Batch && !batchCenter[r.Batch]) batchCenter[r.Batch] = r.Center; });
+
+  // 2) Accessible batches + students come from the STUDENTS sheet.
+  //    Batch count and student count are driven by enrolled students.
+  //    Stream + batch + faculty filters apply here too (so KPIs/absent
+  //    respect them). centerBatches = center-scope only, for option lists.
+  const studentBatch = {};
+  const accBatches = new Set();
+  const centerBatches = new Set();
+  const accStudents = new Set();
+  DATA.students.forEach(r => {
+    const reg = r.regno, b = r.batch;
+    if (!reg) return;
+    studentBatch[reg] = b;
+    if (b && centerSet.has(batchCenter[b])) {
+      if (roleBatches && !roleBatches.has(b)) return; // faculty: own batches only
+      centerBatches.add(b);
+      const fb = filters.faculty ? facultyBatchMap[String(filters.faculty).toLowerCase()] : null;
+      if (filters.faculty && (!fb || !fb.has(b))) return;
+      if (filters.stream && normStream(r.class_course) !== filters.stream) return;
+      if (filters.batch && b !== filters.batch) return;
+      accBatches.add(b);
+      accStudents.add(reg);
+    }
+  });
+
+  // 3) Faculty in scope
+  const accFaculty = new Set();
+  DATA.fbm.forEach(r => {
+    if (accBatches.has(r.Batch) && r.MailID) {
+      const mail = r.MailID.trim();
+      if (roleBatches && mail.toLowerCase() !== String(user.email).toLowerCase()) return;
+      accFaculty.add(mail);
+    }
+  });
+
+  // 4) Filter tests by scope + stream + batch + date range
+  const dateFrom = filters.dateFrom ? parseTestDate(filters.dateFrom) : null;
+  const dateTo = filters.dateTo ? parseTestDate(filters.dateTo) : null;
+  const filteredTests = [];
+  const batchTestDates = {}; // To compute total tests in batch
+  
+  for (const t of DATA.tests) {
+    if (!accStudents.has(t.reg_no)) continue;
+    if (filters.stream && t.stream !== filters.stream) continue;
+    if (filters.batch && t.current_batch !== filters.batch) continue;
+    if (dateFrom || dateTo) {
+      const d = parseTestDate(t._date);
+      if (!d) continue;
+      if (dateFrom && d < dateFrom) continue;
+      if (dateTo && d > dateTo) continue;
+    }
+    filteredTests.push(t);
+    
+    // Add to batchTestDates
+    if (t.current_batch && t._date) {
+        if (!batchTestDates[t.current_batch]) {
+            batchTestDates[t.current_batch] = new Set();
+        }
+        batchTestDates[t.current_batch].add(t._date);
+    }
+  }
+
+  // 5) Per-student aggregation (avg % + latest test for subject marks + userscore)
+  const stuAgg = {};
+  for (const t of filteredTests) {
+    const pct = parsePct(t.markspercent);
+    const uScore = parseNum(t.userscore); // Added userscore logic
+    if (pct <= 0) continue;
+    if (!stuAgg[t.reg_no]) stuAgg[t.reg_no] = { total: 0, totalUserScore: 0, count: 0, latest: t };
+    stuAgg[t.reg_no].total += pct;
+    stuAgg[t.reg_no].totalUserScore += uScore;
+    stuAgg[t.reg_no].count++;
+    stuAgg[t.reg_no].latest = t;
+  }
+
+  const studentList = Object.keys(stuAgg).map(reg => {
+    const a = stuAgg[reg];
+    const lt = a.latest;
+    const b = String(lt.current_batch || '').trim();
+    return {
+      regno: reg,
+      name: String(lt.student_name || '').trim(),
+      stream: String(lt.stream || '').trim(),
+      batch: b,
+      avg: +(a.total / a.count).toFixed(1),
+      avgUserScore: +(a.totalUserScore / a.count).toFixed(1), // Added avg userscore
+      testCount: a.count,
+      batchTotalTests: batchTestDates[b] ? batchTestDates[b].size : 0, // Added batch tests
+      physics: parseNum(lt.physics_marks),
+      chemistry: parseNum(lt.chemistry_marks),
+      maths: parseNum(lt.maths_marks),
+      zoology: parseNum(lt.zoology_marks),
+      botany: parseNum(lt.botany_marks)
+    };
+  });
+  studentList.sort((a, b) => b.avg - a.avg);
+
+  // 6) Per-batch aggregation
+  const batchAgg = {};
+  for (const t of filteredTests) {
+    const pct = parsePct(t.markspercent);
+    if (pct <= 0) continue;
+    const b = t.current_batch;
+    if (!b) continue;
+    if (!batchAgg[b]) batchAgg[b] = { total: 0, count: 0 };
+    batchAgg[b].total += pct;
+    batchAgg[b].count++;
+  }
+  const batchList = Object.keys(batchAgg).map(b => ({
+    batch: b,
+    avg: +(batchAgg[b].total / batchAgg[b].count).toFixed(1)
+  })).sort((a, b) => b.avg - a.avg);
+
+  // Top 3 students of a given batch (by avg %)
+  function topStudentsOf(batch, n) {
+    return studentList.filter(s => s.batch === batch).slice(0, n);
+  }
+
+  // 7) Subject averages for a batch (default = best batch)
+  function subjectAverages(batch) {
+    const sums = { physics: 0, chemistry: 0, maths: 0, zoology: 0, botany: 0 };
+    const counts = { physics: 0, chemistry: 0, maths: 0, zoology: 0, botany: 0 };
+    for (const t of filteredTests) {
+      if (t.current_batch !== batch) continue;
+      for (const s of SUBJ_NAMES) {
+        const v = parseNum(t[SUBJ_LABELS[s].toLowerCase() + '_marks']);
+        if (v > 0) { sums[s] += v; counts[s]++; }
+      }
+    }
+    return SUBJ_NAMES.map(s => ({
+      subject: SUBJ_LABELS[s],
+      avg: counts[s] > 0 ? +(sums[s] / counts[s]).toFixed(1) : 0,
+      count: counts[s]
+    }));
+  }
+
+  // 8) KPIs
+  const totalPct = filteredTests.reduce((s, t) => s + parsePct(t.markspercent), 0);
+  const scoredTests = filteredTests.filter(t => parsePct(t.markspercent) > 0).length;
+  const totalStudents = accStudents.size; // already respects center/stream/batch filters
+  const avgScore = scoredTests > 0 ? +(totalPct / scoredTests).toFixed(1) : 0;
+
+  // 9) Average students — within ±5% of the overall average score
+  const avgLo = avgScore - 5, avgHi = avgScore + 5;
+  const avgStudents = studentList.filter(s => s.avg >= avgLo && s.avg <= avgHi).length;
+
+  // 10) Absent students — students who gave NO test in the current scope.
+  //     Blank date range → never gave a single paper (ever).
+  //     Date range set → gave no paper within that range.
+  //     Name/stream come from the STUDENTS sheet (student_name, class_course).
+  // (We use a secondary loop for absence because we need all tests of the batch, not just those where student scored > 0)
+  const batchTestDatesFull = {};
+  const studentTestDates = {};
+  const studentInfo = {};
+  for (const s of DATA.students) {
+    if (s.regno && !studentInfo[s.regno]) {
+      studentInfo[s.regno] = { name: String(s.student_name || '').trim(), stream: String(s.class_course || '').trim() };
+    }
+  }
+  for (const t of DATA.tests) {
+    if (dateFrom || dateTo) {
+      const d = parseTestDate(t._date);
+      if (!d) continue;
+      if (dateFrom && d < dateFrom) continue;
+      if (dateTo && d > dateTo) continue;
+    }
+    const b = t.current_batch;
+    if (b) { if (!batchTestDatesFull[b]) batchTestDatesFull[b] = new Set(); batchTestDatesFull[b].add(t._date); }
+    if (t.reg_no) {
+      if (!studentTestDates[t.reg_no]) studentTestDates[t.reg_no] = new Set();
+      studentTestDates[t.reg_no].add(t._date);
+    }
+  }
+  const absentStudents = [];
+  for (const reg of accStudents) {
+    const b = studentBatch[reg];
+    // Only consider students whose batch actually had a test in scope
+    // (avoids listing brand-new batches that never had a paper).
+    const batchDates = batchTestDatesFull[b];
+    if (!batchDates || batchDates.size === 0) continue;
+    // Absent = gave NO test in scope.
+    const stuDates = studentTestDates[reg];
+    if (stuDates && stuDates.size > 0) continue;
+    // Count of batch tests the student missed (they gave none, so all of them).
+    let missed = 0;
+    for (const d of batchDates) if (!stuDates || !stuDates.has(d)) missed++;
+    const info = studentInfo[reg] || {};
+    absentStudents.push({ regno: reg, name: info.name || '', stream: info.stream || '', batch: b, papers: 0, missed });
+  }
+  absentStudents.sort((a, b) => b.missed - a.missed || (a.batch || '').localeCompare(b.batch || ''));
+
+  const bestBatch = batchList[0] || null;
+  const bottomBatch = batchList[batchList.length - 1] || null;
+  const graphBatch = filters.batch || (bestBatch ? bestBatch.batch : null);
+
+  // Top / bottom students: full sorted lists (desc / asc by avg %).
+  // The UI slices these to a user-chosen N (default 10).
+  let toppers = [], bottom = [];
+  if (studentList.length > 0) {
+    toppers = studentList.slice();
+    bottom = studentList.slice().reverse();
+  }
+
+  // 11) Batch subject-wise % per test (like the student graph)
+  function batchSubjectGraphData(batch) {
+    const perTest = {};
+    const hasSubj = {};
+    for (const t of filteredTests) {
+      if (t.current_batch !== batch) continue;
+      const d = t._date;
+      if (!perTest[d]) perTest[d] = { scoreSum: 0, count: 0, subjPctSum: {} };
+      const sc = parseNum(t.userscore);
+      perTest[d].scoreSum += sc;
+      if (sc > 0) {
+        perTest[d].count++;
+        for (const s of SUBJ_NAMES) {
+          const v = parseNum(t[s + '_marks']);
+          if (v > 0) { perTest[d].subjPctSum[s] = (perTest[d].subjPctSum[s] || 0) + (v / sc) * 100; hasSubj[s] = true; }
+        }
+      }
+    }
+    // Only subjects that actually appear in this batch's tests
+    // (a NEET batch has no Maths, so no flat 0% line).
+    const subs = SUBJ_NAMES.filter(s => hasSubj[s]);
+    const dates = Object.keys(perTest).sort((a, b) => (parseTestDate(a) || 0) - (parseTestDate(b) || 0));
+    return dates.map(date => {
+      const d = perTest[date];
+      const subjects = {};
+      for (const s of subs) {
+        // Average of per-student subject % (subject_marks/userscore*100)
+        subjects[s] = d.count > 0 ? +((d.subjPctSum[s] || 0) / d.count).toFixed(1) : 0;
+      }
+      // Score shown in the tooltip = average userscore of the test
+      const avgScore = d.count > 0 ? Math.round(d.scoreSum / d.count) : d.scoreSum;
+      return { date, score: avgScore, subjects };
+    });
+  }
+
+  // Faculty option list — scoped to the selected centers (+ role), NOT to
+  // the stream/batch/faculty filters (so selecting a stream can't empty it).
+  const facOptions = new Set();
+  DATA.fbm.forEach(r => {
+    if (!r.MailID || !r.Batch) return;
+    if (!centerBatches.has(r.Batch)) return;
+    facOptions.add(r.MailID.trim());
+  });
+
+  // Stream option list — scoped to the selected centers (+ role).
+  const streamSet = new Set();
+  for (const t of DATA.tests) {
+    if (t.current_batch && centerBatches.has(t.current_batch) && t.stream) {
+      streamSet.add(normStream(t.stream));
+    }
+  }
+
+  // 12) Per-batch subject-wise average % (subject_marks / userscore * 100),
+  //     averaged across every test in the batch. Includes overall avg + center.
+  const batchSubjAgg = {};
+  for (const t of filteredTests) {
+    const b = t.current_batch;
+    if (!b) continue;
+    const score = parseNum(t.userscore);
+    if (score <= 0) continue;
+    if (!batchSubjAgg[b]) batchSubjAgg[b] = { sums: { physics: 0, chemistry: 0, maths: 0, zoology: 0, botany: 0 }, count: 0 };
+    const agg = batchSubjAgg[b];
+    agg.count++;
+    for (const s of SUBJ_NAMES) {
+      const m = parseNum(t[s + '_marks']);
+      agg.sums[s] += (m / score) * 100;
+    }
+  }
+  const batchSubjectAvg = Object.keys(batchSubjAgg).map(b => {
+    const agg = batchSubjAgg[b];
+    const subjects = {};
+    for (const s of SUBJ_NAMES) subjects[s] = agg.count ? +((agg.sums[s] / agg.count)).toFixed(1) : 0;
+    return {
+      batch: b,
+      center: batchCenterName(b),
+      avg: batchAgg[b] ? +(batchAgg[b].total / batchAgg[b].count).toFixed(1) : 0,
+      physics: subjects.physics, chemistry: subjects.chemistry, maths: subjects.maths,
+      zoology: subjects.zoology, botany: subjects.botany
+    };
+  });
+  batchSubjectAvg.sort((a, b) => b.avg - a.avg);
+
+  return {
+    kpis: {
+      centers: centers,
+      totalBatches: filters.batch ? 1 : accBatches.size,
+      totalStudents: totalStudents,
+      totalFaculty: accFaculty.size,
+      avgScore: avgScore,
+      avgStudents: avgStudents,
+      absentStudents: absentStudents.length
+    },
+    toppers: toppers,
+    bottom: bottom,
+    bestBatch: bestBatch ? { ...bestBatch, topStudents: topStudentsOf(bestBatch.batch, 3) } : null,
+    bottomBatch: bottomBatch ? { ...bottomBatch, topStudents: topStudentsOf(bottomBatch.batch, 3) } : null,
+    subjectGraph: graphBatch ? { batch: graphBatch, subjects: subjectAverages(graphBatch) } : null,
+    batchSubjectGraph: graphBatch ? { batch: graphBatch, history: batchSubjectGraphData(graphBatch) } : null,
+    absentStudents: absentStudents,
+    batchSubjectAvg: batchSubjectAvg,
+    filterOptions: {
+      centers: allCenters(),
+      streams: [...streamSet].sort(),
+      batches: [...accBatches].sort(),
+      faculty: [...facOptions].sort()
+    }
+  };
+}
+
+// ── STUDENT SEARCH (separate tab) ───────────────────
+// Returns full test history for a regno, with only the subjects the
+// student actually studies (JEE → no Zoo/Bot, NEET → no Maths).
+function getStudentDetail(regno) {
+  const tests = DATA.tests.filter(t => t.reg_no === regno);
+  if (tests.length === 0) return null;
+  const first = tests[0];
+  const stream = String(first.stream || '').trim();
+  const subjects = streamSubjects(stream);
+  const history = tests.map(t => {
+    const row = {
+      date: String(t._date || '').trim(),
+      type: String(t._type || '').trim(),
+      pattern: String(t._pattern || '').trim(),
+      series: String(t.series || '').trim(),
+      total: parseNum(t.totalmarks),
+      score: parseNum(t.userscore),
+      pct: parsePct(t.markspercent),
+      rank: t._rank || null,
+      subjects: {}
+    };
+    for (const s of subjects) row.subjects[s] = parseNum(t[s + '_marks']);
+    return row;
+  });
+  history.sort((a, b) => (parseTestDate(a.date) || 0) - (parseTestDate(b.date) || 0));
+  return {
+    regno: regno,
+    name: String(first.student_name || '').trim(),
+    stream: stream,
+    batch: String(first.current_batch || '').trim(),
+    subjects: subjects,
+    history: history
+  };
+}
+
+/* ===== home.js ===== */
+// ============================================================
+//  home.js — UNIFIED HOME VIEW
+//  Renders the single Home screen: filter panel, KPI cards,
+//  topper/bottom students, best/bottom batches, and the
+//  per-subject average graph. All data comes from published CSVs
+//  via data.js (no backend data calls).
+//
+//  Depends on: core.js (user, showLoading, hideLoading, esc),
+//              data.js (loadData, computeHome, accessibleCenters)
+// ============================================================
+
+let homeFilters = { centers: [], stream: '', batch: '', faculty: '', dateFrom: '', dateTo: '' };
+let lastHomeResult = null; // last computeHome result (for table downloads)
+
+// ── LOAD + RENDER ───────────────────────────────────
+async function loadHome() {
+  showLoading();
+  try {
+    await loadData();
+    // Default center selection based on role
+    if (homeFilters.centers.length === 0) {
+      homeFilters.centers = accessibleCenters();
+      // Faculty: auto-select their single batch/stream (if only one)
+      if (user.level <= 1) {
+        const batches = facultyBatches(user.email);
+        const streams = facultyStreams(user.email);
+        if (batches.length === 1) homeFilters.batch = batches[0];
+        if (streams.length === 1) homeFilters.stream = streams[0];
+      }
+    }
+    populateHomeFilters();
+    renderHome();
+  } catch (e) {
+    console.error('Home error:', e);
+    const el = document.getElementById('homeError');
+    if (el) { el.textContent = 'Data load failed: ' + e.message; el.classList.add('show'); }
+  }
+  hideLoading();
+}
+
+function populateHomeFilters() {
+  // Center dropdown (role-scoped)
+  const centers = accessibleCenters();
+  fillSelect('homeFilterCenter', centers, 'All Centers');
+  const centerSel = document.getElementById('homeFilterCenter');
+  // If exactly one accessible center, default to it
+  if (centers.length === 1) {
+    centerSel.value = centers[0];
+    homeFilters.centers = centers;
+  }
+  // Faculty role: lock the center to their own center
+  if (user.level <= 1) centerSel.disabled = true;
+
+  // Stream/class dropdown — populated after compute (needs all streams)
+  // Batch dropdown — populated after compute
+  // Faculty dropdown — populated after compute
+}
+
+function renderHome() {
+  const result = computeHome(homeFilters);
+  lastHomeResult = result;
+
+  // ── Filters: streams + batches + faculty (from result) ──
+  fillSelect('homeFilterStream', result.filterOptions.streams, 'All Classes');
+  fillSelect('homeFilterBatch', result.filterOptions.batches, 'All Batches');
+  fillSelect('homeFilterFaculty', result.filterOptions.faculty, 'All Faculty');
+  if (homeFilters.stream) document.getElementById('homeFilterStream').value = homeFilters.stream;
+  if (homeFilters.batch) document.getElementById('homeFilterBatch').value = homeFilters.batch;
+  if (homeFilters.faculty) document.getElementById('homeFilterFaculty').value = homeFilters.faculty;
+
+  // ── KPI cards ──
+  const k = result.kpis;
+  document.getElementById('homeKpiCenter').textContent = k.centers.length === 1 ? k.centers[0] : (k.centers.length + ' Centers');
+  document.getElementById('homeKpiBatches').textContent = k.totalBatches.toLocaleString();
+  document.getElementById('homeKpiStudents').textContent = k.totalStudents.toLocaleString();
+  document.getElementById('homeKpiFaculty').textContent = k.totalFaculty.toLocaleString();
+  document.getElementById('homeKpiAvg').textContent = k.avgScore + '%';
+  document.getElementById('homeKpiAvgStudents').textContent = (k.avgStudents || 0).toLocaleString();
+  document.getElementById('homeKpiAbsent').textContent = (k.absentStudents || 0).toLocaleString();
+  // Small "% of total students" hint under Average & Absent students
+  const totalStu = k.totalStudents || 0;
+  const pct = n => totalStu > 0 ? ((n / totalStu) * 100).toFixed(1) + '% of students' : '';
+  document.getElementById('homeKpiAvgStudentsPct').textContent = pct(k.avgStudents || 0);
+  document.getElementById('homeKpiAbsentPct').textContent = pct(k.absentStudents || 0);
+
+  // ── Toppers ──
+  renderStudentTable('homeTopperBody', result.toppers, parseInt(document.getElementById('topperN').value, 10) || 10);
+  // ── Bottom ──
+  renderStudentTable('homeBottomBody', result.bottom, parseInt(document.getElementById('bottomN').value, 10) || 10);
+
+  // ── Best / Bottom batch ──
+  renderBatchCard('homeBestBatch', result.bestBatch, true);
+  renderBatchCard('homeBottomBatch', result.bottomBatch, false);
+
+  // ── Absent students ──
+  renderAbsentStudents(result.absentStudents);
+
+  // ── Batch-wise subject average ──
+  renderBatchAvgTable(result.batchSubjectAvg);
+
+  // ── Subject graph ──
+  renderSubjectGraph(result.batchSubjectGraph);
+
+  // ── Fit each scrollable table to exactly 10 rows + header ──
+  fitFixedTables();
+}
+
+// Set max-height of every .table-scroll--fixed so exactly 10 rows (+ header)
+// are visible; the rest scroll vertically. Re-runs on resize so it stays
+// correct when the fluid font size changes.
+function fitFixedTables() {
+  document.querySelectorAll('.table-scroll--fixed').forEach(wrap => {
+    const head = wrap.querySelector('thead');
+    const row = wrap.querySelector('tbody tr');
+    if (!head || !row) return;
+    const hh = head.getBoundingClientRect().height;
+    const rh = row.getBoundingClientRect().height;
+    wrap.style.maxHeight = (hh + rh * 10 + 2) + 'px';
+  });
+}
+window.addEventListener('resize', () => {
+  if (typeof currentView === 'undefined' || currentView === 'home') fitFixedTables();
+});
+
+function renderAbsentStudents(list) {
+  const body = document.getElementById('homeAbsentBody');
+  body.innerHTML = (list || []).map((s, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${esc(s.name || '—')}</td>
+      <td>${esc(s.regno)}</td>
+      <td>${esc(s.stream || '—')}</td>
+      <td>${esc(s.batch || '—')}${s.batch ? `<span class="batch-center">(${esc(batchCenterName(s.batch))})</span>` : ''}</td>
+      <td class="text-center"><span class="status-badge status-poor">${s.missed}</span></td>
+    </tr>
+  `).join('') || '<tr><td colspan="6" class="empty-msg"><p>No absent students</p></td></tr>';
+}
+
+// Batch-wise subject average table (Batch | Center | Avg | Phy | Chem | Math | Zoo | Bot)
+function renderBatchAvgTable(list) {
+  const body = document.getElementById('homeBatchAvgBody');
+  body.innerHTML = (list || []).map((b, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td>${esc(b.batch)}${b.batch ? `<span class="batch-center">(${esc(b.center)})</span>` : ''}</td>
+      <td>${esc(b.center || '—')}</td>
+      <td class="text-center"><span class="status-badge ${scoreBadge(b.avg)}">${b.avg}%</span></td>
+      <td class="text-center">${b.physics}%</td>
+      <td class="text-center">${b.chemistry}%</td>
+      <td class="text-center">${b.maths}%</td>
+      <td class="text-center">${b.zoology}%</td>
+      <td class="text-center">${b.botany}%</td>
+    </tr>
+  `).join('') || '<tr><td colspan="9" class="empty-msg"><p>No data</p></td></tr>';
+}
+
+// Which subject columns to show (Faculty → own subjects only)
+function visibleSubjects() {
+  if (user.level >= 2) return SUBJ_NAMES;
+  const subs = facultySubjects(user.email);
+  return subs.length ? subs : SUBJ_NAMES;
+}
+
+function renderStudentTable(bodyId, students, n) {
+  const subs = visibleSubjects();
+  // Dynamic subject header (Faculty sees only own subjects) + Batch Tests & Avg Score
+  const head = document.getElementById(bodyId === 'homeTopperBody' ? 'homeTopperHead' : 'homeBottomHead');
+  if (head) {
+    head.innerHTML = '<tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th>' +
+      '<th class="text-center">Tests Taken</th>' +
+      '<th class="text-center">Batch Tests</th>' + // Added Batch Tests
+      '<th class="text-center">Avg Score</th>' + // Added Avg Score
+      '<th class="text-center">Avg %</th>' +
+      subs.map(s => '<th class="text-center">' + SUBJ_LABELS[s] + '</th>').join('') + '</tr>';
+  }
+  const body = document.getElementById(bodyId);
+  // Show the top/bottom N students (default 10, user-adjustable).
+  const rows = (students || []).slice(0, n || 10);
+  body.innerHTML = rows.map((s, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><div class="stu-name">${esc(s.name || '—')}</div><div class="stu-meta">${esc(s.regno)}</div></td>
+      <td>${esc(s.stream || '—')}</td>
+      <td>${esc(s.batch || '—')}${s.batch ? `<span class="batch-center">(${esc(batchCenterName(s.batch))})</span>` : ''}</td>
+      <td class="text-center">${s.testCount || 0}</td>
+      <td class="text-center">${s.batchTotalTests || 0}</td> <!-- Added Batch Tests -->
+      <td class="text-center">${s.avgUserScore || 0}</td> <!-- Added Avg Score -->
+      <td class="text-center"><span class="status-badge ${scoreBadge(s.avg)}">${s.avg}%</span></td>
+      ${subs.map(sub => `<td class="text-center">${s[sub] > 0 ? s[sub] : '—'}</td>`).join('')}
+    </tr>
+  `).join('') || '<tr><td colspan="' + (8 + subs.length) + '" class="empty-msg"><p>No data</p></td></tr>'; // Updated colspan to 8
+}
+
+// User changed the Top/Bottom N count — re-render just that table.
+function onTopNChange(key) {
+  const r = lastHomeResult;
+  if (!r) return;
+  const input = document.getElementById(key === 'topper' ? 'topperN' : 'bottomN');
+  let n = parseInt(input.value, 10);
+  if (isNaN(n) || n < 1) { n = 10; input.value = 10; }
+  renderStudentTable(key === 'topper' ? 'homeTopperBody' : 'homeBottomBody', key === 'topper' ? r.toppers : r.bottom, n);
+  fitFixedTables();
+}
+
+function renderBatchCard(id, batch, isBest) {
+  const el = document.getElementById(id);
+  if (!batch) { el.innerHTML = '<div class="empty-msg"><p>No data</p></div>'; return; }
+  const badge = isBest ? 'status-excellent' : 'status-poor';
+  const label = isBest ? 'Top Batch' : 'Bottom Batch';
+  el.innerHTML = `
+    <div class="batch-card-head">
+      <div>
+        <div class="batch-card-name">${esc(batch.batch)} <span class="batch-center">(${esc(batchCenterName(batch.batch))})</span></div>
+        <div class="batch-card-label">${label}</div>
+      </div>
+      <span class="status-badge ${badge}">${batch.avg}%</span>
+    </div>
+    <div class="batch-card-students">
+      ${batch.topStudents.map((s, i) => `
+        <div class="batch-stu-row">
+          <span class="batch-stu-rank">${i + 1}</span>
+          <span class="batch-stu-name">${esc(s.name || '—')}</span>
+          <span class="status-badge ${scoreBadge(s.avg)}">${s.avg}%</span>
+        </div>
+      `).join('') || '<div class="empty-msg"><p>No students</p></div>'}
+    </div>
+  `;
+}
+
+// Current chart data for home subject-graph hover tooltips
+let homeChartData = null;
+
+function renderSubjectGraph(graph) {
+  const wrap = document.getElementById('homeSubjectGraph');
+  if (!graph || !graph.history || !graph.history.length) {
+    wrap.innerHTML = '<div class="empty-msg"><p>No data</p></div>';
+    return;
+  }
+  const history = graph.history;
+  const subs = visibleSubjects().filter(s => history.some(t => t.subjects && s in t.subjects));
+  homeChartData = { history, subjects: subs };
+
+  const W = 1000, H = 220, PL = 46, PR = 30, PT = 16, PB = 36;
+  const plotW = W - PL - PR, plotH = H - PT - PB;
+  const n = history.length;
+  const x = i => PL + (n === 1 ? plotW / 2 : (i / (n - 1)) * plotW);
+  const y = v => PT + plotH - (v / 100) * plotH; // y-axis is 0-100%
+
+  // One line per subject (percent of score per test)
+  const lines = subs.map(s => {
+    const path = history.map((t, i) => (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ' ' + y(t.subjects[s] || 0).toFixed(1)).join(' ');
+    const points = history.map((t, i) =>
+      `<circle cx="${x(i)}" cy="${y(t.subjects[s] || 0)}" r="3.5" fill="${SUBJ_COLORS[s]}" stroke="#0b0b0f" stroke-width="1"/>`).join('');
+    return `<path d="${path}" fill="none" stroke="${SUBJ_COLORS[s]}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points}`;
+  }).join('');
+
+  // Y-axis gridlines (0,25,50,75,100)
+  const gridlines = [0, 25, 50, 75, 100].map(v => {
+    const yy = y(v);
+    return `<line x1="${PL}" y1="${yy}" x2="${W - PR}" y2="${yy}" stroke="rgba(255,255,255,0.08)"/>
+      <text x="${PL - 8}" y="${yy + 4}" text-anchor="end" class="chart-label">${v}</text>`;
+  }).join('');
+
+  // X-axis labels (test dates)
+  const xLabels = history.map((t, i) =>
+    `<text x="${x(i)}" y="${H - 18}" text-anchor="middle" class="chart-label">${esc(String(t.date).replace(/, \d{4}/, ''))}</text>`).join('');
+
+  // Hover bands (one per test) + legend
+  const bandW = n === 1 ? plotW : plotW / n;
+  const bands = history.map((t, i) =>
+    `<rect x="${x(i) - bandW / 2}" y="${PT}" width="${bandW}" height="${plotH}" fill="transparent"
+      onmousemove="moveHomeTooltip(event)" onmouseover="showHomeTooltip(${i})" onmouseout="hideHomeTooltip()"/>`).join('');
+
+  wrap.innerHTML = `
+    <div class="graph-title">Subject % of score per test — <strong>${esc(graph.batch)} <span class="batch-center">(${esc(batchCenterName(graph.batch))})</span></strong> (hover a point)</div>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 ${W} ${H}" class="line-chart" preserveAspectRatio="xMidYMid meet">
+        ${gridlines}
+        <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H - PB}" stroke="rgba(255,255,255,0.15)"/>
+        <line x1="${PL}" y1="${H - PB}" x2="${W - PR}" y2="${H - PB}" stroke="rgba(255,255,255,0.15)"/>
+        ${lines}
+        ${xLabels}
+        ${bands}
+      </svg>
+      <div class="chart-legend">
+        ${subs.map(s => `<span><i class="legend-dot" style="background:${SUBJ_COLORS[s]}"></i> ${SUBJ_LABELS[s]}</span>`).join('')}
+      </div>
+      <div class="chart-tooltip" id="homeChartTooltip"></div>
+    </div>
+  `;
+}
+
+function showHomeTooltip(i) {
+  const d = homeChartData;
+  if (!d || !d.history[i]) return;
+  const t = d.history[i];
+  const tooltip = document.getElementById('homeChartTooltip');
+  tooltip.innerHTML =
+    `<div class="tt-date">${esc(t.date)}</div>` +
+    `<div class="tt-score">Score: <strong>${t.score}</strong></div>` +
+    d.subjects.map(s =>
+      `<div class="tt-subj"><span class="tt-dot" style="background:${SUBJ_COLORS[s]}"></span>${SUBJ_LABELS[s]}: ${t.subjects[s] || 0}%</div>`).join('');
+  tooltip.style.display = 'block';
+}
+function moveHomeTooltip(evt) {
+  const tooltip = document.getElementById('homeChartTooltip');
+  const wrap = tooltip.closest('.chart-wrap');
+  const rect = wrap.getBoundingClientRect();
+  let left = evt.clientX - rect.left + 14;
+  let top = evt.clientY - rect.top - 10;
+  if (left + tooltip.offsetWidth > rect.width) left = evt.clientX - rect.left - tooltip.offsetWidth - 14;
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+}
+function hideHomeTooltip() {
+  const tooltip = document.getElementById('homeChartTooltip');
+  if (tooltip) tooltip.style.display = 'none';
+}
+
+// ── FILTER HANDLERS ─────────────────────────────────
+function onHomeCenterChange() {
+  const sel = document.getElementById('homeFilterCenter');
+  homeFilters.centers = sel.value ? [sel.value] : accessibleCenters();
+  homeFilters.batch = '';
+  homeFilters.faculty = '';
+  renderHome();
+}
+function onHomeStreamChange() {
+  homeFilters.stream = document.getElementById('homeFilterStream').value;
+  homeFilters.batch = '';
+  renderHome();
+}
+function onHomeBatchChange() {
+  homeFilters.batch = document.getElementById('homeFilterBatch').value;
+  renderHome();
+}
+function onHomeFacultyChange() {
+  homeFilters.faculty = document.getElementById('homeFilterFaculty').value;
+  homeFilters.batch = '';
+  renderHome();
+}
+function onHomeDateChange() {
+  homeFilters.dateFrom = document.getElementById('homeDateFrom').value;
+  homeFilters.dateTo = document.getElementById('homeDateTo').value;
+  renderHome();
+}
+function resetHomeFilters() {
+  homeFilters = { centers: accessibleCenters(), stream: '', batch: '', faculty: '', dateFrom: '', dateTo: '' };
+  document.getElementById('homeFilterCenter').value = '';
+  document.getElementById('homeFilterStream').value = '';
+  document.getElementById('homeFilterBatch').value = '';
+  document.getElementById('homeFilterFaculty').value = '';
+  document.getElementById('homeDateFrom').value = '';
+  document.getElementById('homeDateTo').value = '';
+  renderHome();
+}
+
+// ── TABLE DOWNLOADS (CSV / XLS / PDF) ───────────────
+let pendingExport = null;
+
+// Build { title, headers, rows } for a Home table from the last result.
+function tableExportData(key) {
+  const r = lastHomeResult;
+  if (!r) return null;
+  if (key === 'topper' || key === 'bottom') {
+    const subs = visibleSubjects();
+    const isTop = key === 'topper';
+    const list = isTop ? r.toppers : r.bottom;
+    const n = parseInt(document.getElementById(isTop ? 'topperN' : 'bottomN').value, 10) || 10;
+    return {
+      title: isTop ? 'Topper Students' : 'Bottom Performing Students',
+      // Updated headers for downloads to match UI
+      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Tests Taken', 'Batch Tests', 'Avg Score', 'Avg %', ...subs.map(s => SUBJ_LABELS[s])],
+      rows: list.slice(0, n).map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, s.testCount || 0, s.batchTotalTests || 0, s.avgUserScore || 0, s.avg + '%', ...subs.map(sub => s[sub] || '')])
+    };
+  }
+  if (key === 'absent') {
+    return {
+      title: 'Absent Students',
+      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Center', 'Papers Not Given'],
+      rows: r.absentStudents.map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, batchCenterName(s.batch), s.missed])
+    };
+  }
+  if (key === 'batchAvg') {
+    return {
+      title: 'Batch-wise Subject Average',
+      headers: ['#', 'Batch', 'Center', 'Avg Score %', 'Physics %', 'Chemistry %', 'Maths %', 'Zoology %', 'Botany %'],
+      rows: r.batchSubjectAvg.map((b, i) => [i + 1, b.batch, b.center, b.avg + '%', b.physics + '%', b.chemistry + '%', b.maths + '%', b.zoology + '%', b.botany + '%'])
+    };
+  }
+  return null;
+}
+
+function showDownloadMenu(btn, key) {
+  const data = tableExportData(key);
+  if (!data) return;
+  pendingExport = data;
+  const old = document.getElementById('downloadMenu');
+  if (old) old.remove();
+  const menu = document.createElement('div');
+  menu.id = 'downloadMenu';
+  menu.className = 'download-menu';
+  menu.innerHTML =
+    '<div class="download-menu-title">Download as</div>' +
+    '<button type="button" onclick="doDownload(\'csv\')">CSV</button>' +
+    '<button type="button" onclick="doDownload(\'xls\')">Excel (XLS)</button>' +
+    '<button type="button" onclick="doDownload(\'pdf\')">PDF</button>';
+  document.body.appendChild(menu);
+  const r = btn.getBoundingClientRect();
+  menu.style.top = (r.bottom + 6) + 'px';
+  menu.style.left = Math.max(8, Math.min(r.left, window.innerWidth - 170)) + 'px';
+  setTimeout(() => document.addEventListener('click', closeDownloadMenu, { once: true }), 0);
+}
+
+function closeDownloadMenu() {
+  const m = document.getElementById('downloadMenu');
+  if (m) m.remove();
+}
+
+function doDownload(fmt) {
+  const d = pendingExport;
+  closeDownloadMenu();
+  pendingExport = null;
+  if (!d) return;
+  const filename = d.title.replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '_');
+  if (fmt === 'csv') downloadCSV(filename, d.headers, d.rows);
+  else if (fmt === 'xls') downloadXLS(filename, d.headers, d.rows);
+  else downloadPDF(filename, d.title, d.headers, d.rows);
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function downloadCSV(filename, headers, rows) {
+  const csv = [headers, ...rows].map(r => r.map(c => {
+    const s = String(c == null ? '' : c);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(',')).join('\n');
+  triggerDownload(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' }), filename + '.csv');
+}
+
+function downloadXLS(filename, headers, rows) {
+  const html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">' +
+    '<head><meta charset="utf-8"></head><body><table border="1">' +
+    '<tr>' + headers.map(h => '<th>' + esc(h) + '</th>').join('') + '</tr>' +
+    rows.map(r => '<tr>' + r.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>').join('') +
+    '</table></body></html>';
+  triggerDownload(new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' }), filename + '.xls');
+}
+
+function downloadPDF(filename, title, headers, rows) {
+  const win = window.open('', '_blank');
+  if (!win) { alert('Popup blocked — allow popups to download PDF.'); return; }
+  win.document.write(
+    '<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + esc(title) + '</title>' +
+    '<style>body{font-family:Arial,Helvetica,sans-serif;padding:24px;color:#111}h2{color:#E21B38;margin:0 0 16px;font-size:20px}' +
+    'table{border-collapse:collapse;width:100%;font-size:12px}th,td{border:1px solid #bbb;padding:6px 8px;text-align:left}' +
+    'th{background:#f0f0f0;font-weight:700}</style></head><body>' +
+    '<h2>' + esc(title) + '</h2>' +
+    '<table><thead><tr>' + headers.map(h => '<th>' + esc(h) + '</th>').join('') + '</tr></thead><tbody>' +
+    rows.map(r => '<tr>' + r.map(c => '<td>' + esc(c) + '</td>').join('') + '</tr>').join('') +
+    '</tbody></table></body></html>'
+  );
+  win.document.close();
+  win.focus();
+  win.print();
+}
+
+/* ===== student.js ===== */
+// ============================================================
+//  student.js — STUDENT SEARCH TAB
+//  Enter a reg no → full test history with subject-wise marks and
+//  a per-test subject % graph. Faculty sees only their own subjects.
+//  Percent per subject = subject_marks / userscore * 100.
+//  JEE students don't study Zoology/Botany; NEET don't study Maths.
+//
+//  Depends on: core.js (user, esc, scoreBadge), data.js
+// ============================================================
+
+function loadStuView() {
+  // Ensure data is loaded so search works immediately
+  loadData().catch(() => {});
+}
+
+function searchStu() {
+  const input = document.getElementById('studentSearchInput');
+  const regno = input.value.trim();
+  const err = document.getElementById('studentError');
+  err.classList.remove('show');
+  err.textContent = '';
+  const result = document.getElementById('studentResult');
+  if (!regno) { err.textContent = 'Enter a reg no'; err.classList.add('show'); return; }
+
+  showLoading();
+  loadData().then(() => {
+    const detail = getStudentDetail(regno);
+    hideLoading();
+    if (!detail) {
+      result.style.display = 'none';
+      err.textContent = 'Student not found: ' + regno;
+      err.classList.add('show');
+      return;
+    }
+    result.style.display = 'block';
+    renderStuDetail(detail);
+  }).catch(() => { hideLoading(); err.textContent = 'Data load failed'; err.classList.add('show'); });
+}
+
+function renderStuDetail(detail) {
+  // ── Student info ──
+  const tests = detail.history.length;
+  const avg = tests > 0 ? +(detail.history.reduce((s, t) => s + t.pct, 0) / tests).toFixed(1) : 0;
+  document.getElementById('studentDetailStats').innerHTML = `
+    <div class="detail-stat"><div class="ds-value">${esc(detail.name || '—')}</div><div class="ds-label">Name</div></div>
+    <div class="detail-stat"><div class="ds-value">${esc(detail.regno)}</div><div class="ds-label">Reg No</div></div>
+    <div class="detail-stat"><div class="ds-value">${esc(detail.stream || '—')}</div><div class="ds-label">Stream</div></div>
+    <div class="detail-stat"><div class="ds-value">${esc(detail.batch || '—')} <span class="batch-center">(${esc(batchCenterName(detail.batch))})</span></div><div class="ds-label">Batch</div></div>
+    <div class="detail-stat"><div class="ds-value">${tests}</div><div class="ds-label">Tests</div></div>
+    <div class="detail-stat"><div class="ds-value">${avg}%</div><div class="ds-label">Avg %</div></div>
+  `;
+
+  // ── Subject % graph (per test) ──
+  renderStuGraph(detail);
+
+  // ── Test history table ──
+  const subs = visibleStuSubjects(detail);
+  const head = document.getElementById('studentTestHead');
+  head.innerHTML = '<tr><th>Date</th><th>Type</th>' +
+    subs.map(s => '<th class="text-center">' + SUBJ_LABELS[s] + '</th>').join('') +
+    '<th class="text-center">Total</th><th class="text-center">Score</th><th class="text-center">%</th><th class="text-center">Rank</th></tr>';
+
+  const body = document.getElementById('studentTestBody');
+  body.innerHTML = detail.history.map(t => `
+    <tr>
+      <td>${esc(t.date)}</td>
+      <td>${esc(t.type)}</td>
+      ${subs.map(s => `<td class="text-center">${t.subjects[s] > 0 ? t.subjects[s] : '—'}</td>`).join('')}
+      <td class="text-center">${t.total}</td>
+      <td class="text-center">${t.score}</td>
+      <td class="text-center"><span class="status-badge ${scoreBadge(t.pct)}">${t.pct}%</span></td>
+      <td class="text-center">${t.rank || '—'}</td>
+    </tr>
+  `).join('') || '<tr><td colspan="' + (6 + subs.length) + '" class="empty-msg"><p>No tests</p></td></tr>';
+}
+
+// Subjects to show for a student: their stream subjects, but Faculty
+// only sees their own subjects.
+function visibleStuSubjects(detail) {
+  let subs = detail.subjects;
+  if (user.level < 2) {
+    const own = facultySubjects(user.email);
+    if (own.length) subs = subs.filter(s => own.includes(s));
+  }
+  return subs;
+}
+
+// Subject colors — distinct colors so each subject line is clear
+// (NEET shows exactly 4: Phy/Chem/Zoo/Bot; JEE shows 3: Phy/Chem/Maths)
+const SUBJ_COLORS = { physics: '#F43F5E', chemistry: '#A78BFA', maths: '#60A5FA', zoology: '#4ADE80', botany: '#FBBF24' };
+
+// Current chart data for hover tooltips
+let stuChartData = null;
+
+function renderStuGraph(detail) {
+  const wrap = document.getElementById('studentSubjectGraph');
+  const history = detail.history;
+  if (!history.length) { wrap.innerHTML = '<div class="empty-msg"><p>No tests</p></div>'; return; }
+
+  const subs = visibleStuSubjects(detail); // JEE → 3, NEET → 4, Faculty → own only
+  stuChartData = { history, subjects: subs };
+
+  // percent per subject per test = subject_marks / userscore * 100
+  const pctOf = (t, s) => t.score > 0 ? +((t.subjects[s] / t.score) * 100).toFixed(1) : 0;
+
+  const W = 1000, H = 220, PL = 46, PR = 30, PT = 16, PB = 36;
+  const plotW = W - PL - PR, plotH = H - PT - PB;
+  const n = history.length;
+  const x = i => PL + (n === 1 ? plotW / 2 : (i / (n - 1)) * plotW);
+  const y = v => PT + plotH - (v / 100) * plotH; // y-axis is 0-100%
+
+  // One line per subject
+  const lines = subs.map(s => {
+    const path = history.map((t, i) => (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ' ' + y(pctOf(t, s)).toFixed(1)).join(' ');
+    const points = history.map((t, i) =>
+      `<circle cx="${x(i)}" cy="${y(pctOf(t, s))}" r="3.5" fill="${SUBJ_COLORS[s]}" stroke="#0b0b0f" stroke-width="1"/>`).join('');
+    return `<path d="${path}" fill="none" stroke="${SUBJ_COLORS[s]}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points}`;
+  }).join('');
+
+  // Y-axis gridlines (0,25,50,75,100)
+  const gridlines = [0, 25, 50, 75, 100].map(v => {
+    const yy = y(v);
+    return `<line x1="${PL}" y1="${yy}" x2="${W - PR}" y2="${yy}" stroke="rgba(255,255,255,0.08)"/>
+      <text x="${PL - 8}" y="${yy + 4}" text-anchor="end" class="chart-label">${v}</text>`;
+  }).join('');
+
+  // X-axis labels (test dates)
+  const xLabels = history.map((t, i) =>
+    `<text x="${x(i)}" y="${H - 18}" text-anchor="middle" class="chart-label">${esc(String(t.date).replace(/, \d{4}/, ''))}</text>`).join('');
+
+  // Hover bands (one per test) + legend
+  const bandW = n === 1 ? plotW : plotW / n;
+  const bands = history.map((t, i) =>
+    `<rect x="${x(i) - bandW / 2}" y="${PT}" width="${bandW}" height="${plotH}" fill="transparent"
+      onmousemove="moveStuTooltip(event)" onmouseover="showStuTooltip(${i})" onmouseout="hideStuTooltip()"/>`).join('');
+
+  wrap.innerHTML = `
+    <div class="graph-title">Subject % of score per test — <strong>${esc(detail.name || detail.regno)}</strong> (hover a point)</div>
+    <div class="chart-wrap">
+      <svg viewBox="0 0 ${W} ${H}" class="line-chart" preserveAspectRatio="xMidYMid meet">
+        ${gridlines}
+        <line x1="${PL}" y1="${PT}" x2="${PL}" y2="${H - PB}" stroke="rgba(255,255,255,0.15)"/>
+        <line x1="${PL}" y1="${H - PB}" x2="${W - PR}" y2="${H - PB}" stroke="rgba(255,255,255,0.15)"/>
+        ${lines}
+        ${xLabels}
+        ${bands}
+      </svg>
+      <div class="chart-legend">
+        ${subs.map(s => `<span><i class="legend-dot" style="background:${SUBJ_COLORS[s]}"></i> ${SUBJ_LABELS[s]}</span>`).join('')}
+      </div>
+      <div class="chart-tooltip" id="stuChartTooltip"></div>
+    </div>
+  `;
+}
+
+function showStuTooltip(i) {
+  const d = stuChartData;
+  if (!d || !d.history[i]) return;
+  const t = d.history[i];
+  const tooltip = document.getElementById('stuChartTooltip');
+  const pctOf = (s) => t.score > 0 ? +((t.subjects[s] / t.score) * 100).toFixed(1) : 0;
+  tooltip.innerHTML =
+    `<div class="tt-date">${esc(t.date)}</div>` +
+    `<div class="tt-score">Score: <strong>${t.score}</strong> / ${t.total} (${t.pct}%)</div>` +
+    d.subjects.map(s =>
+      `<div class="tt-subj"><span class="tt-dot" style="background:${SUBJ_COLORS[s]}"></span>${SUBJ_LABELS[s]}: ${t.subjects[s]} marks (${pctOf(s)}%)</div>`).join('');
+  tooltip.style.display = 'block';
+}
+function moveStuTooltip(evt) {
+  const tooltip = document.getElementById('stuChartTooltip');
+  const wrap = tooltip.closest('.chart-wrap');
+  const rect = wrap.getBoundingClientRect();
+  let left = evt.clientX - rect.left + 14;
+  let top = evt.clientY - rect.top - 10;
+  if (left + tooltip.offsetWidth > rect.width) left = evt.clientX - rect.left - tooltip.offsetWidth - 14;
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+}
+function hideStuTooltip() {
+  const tooltip = document.getElementById('stuChartTooltip');
+  if (tooltip) tooltip.style.display = 'none';
+}
+
+/* ===== dashboard.js ===== */
+// ============================================================
+//  dashboard.js — Dashboard stats, top/bottom batches, and
+//                 old-backend compatibility rendering.
+//  Depends on: core.js (apiGet, showLoading, hideLoading, esc,
+//              scoreBadge, user/dashData/batchesData/facultyData)
+// ============================================================
+
+async function loadDashboard() {
+  showLoading();
+  try {
+    const resp = await apiGet('getDashboard', { email: user.email, role: user.role, level: user.level, center: user.center });
+    if (resp.success) {
+      // Detect backend version based on response structure
+      if (resp.data.batches && resp.data.facultyList) {
+        // OLD backend: dashboard includes batches + facultyList
+        backendVersion = 'old';
+        dashData = resp.data.stats || {};
+        // Extract batches from dashboard response
+        batchesData = resp.data.batches || [];
+        facultyData = (resp.data.facultyList || []).map(f => ({
+          email: f.email || '',
+          center: f.center || '',
+          role: f.role || 'Faculty',
+          batches: [],
+          subjects: [],
+          totalStudents: 0,
+          avgScore: null
+        }));
+      } else {
+        // NEW backend: just stats
+        backendVersion = 'new';
+        dashData = resp.data;
+      }
+      renderDashboard();
+
+      // If old backend, try to get batches/faculty from dashboard data
+      if (backendVersion === 'old') {
+        renderDashboardFromOldBackend();
+      } else {
+        loadBatchesForDashboard();
+      }
+    }
+  } catch (e) { console.error('Dashboard error:', e); }
+  hideLoading();
+}
+
+function renderDashboard() {
+  const s = dashData.stats || dashData;
+  document.getElementById('statBatches').textContent = s.totalBatches || 0;
+  document.getElementById('statStudents').textContent = (s.totalStudents || 0).toLocaleString();
+  document.getElementById('statFaculty').textContent = s.totalFaculty || 0;
+  document.getElementById('statAvgScore').textContent = (s.avgScore != null ? s.avgScore : '—') + (s.avgScore != null ? '%' : '');
+}
+
+function renderDashboardFromOldBackend() {
+  // Old backend: sort batches by studentCount (no avgScore available)
+  const batches = batchesData.filter(b => b.batch);
+  batches.sort((a, b) => (b.studentCount || 0) - (a.studentCount || 0));
+
+  // Top 5 by student count
+  const topEl = document.getElementById('topBatchesList');
+  topEl.innerHTML = batches.slice(0, 5).map(b => `
+    <div class="dash-item" style="cursor:pointer" onclick="viewBatchDetail('${esc(b.batch)}')">
+      <div>
+        <div class="batch-name">${b.batch}</div>
+        <div class="batch-meta">${(b.subjects || []).join(', ')}</div>
+      </div>
+      <span class="status-badge status-good">${b.studentCount || 0} students</span>
+    </div>
+  `).join('') || '<div class="empty-msg"><p>No data yet</p></div>';
+
+  // Bottom 5
+  const botEl = document.getElementById('bottomBatchesList');
+  const small = [...batches].sort((a, b) => (a.studentCount || 0) - (b.studentCount || 0));
+  botEl.innerHTML = small.slice(0, 5).map(b => `
+    <div class="dash-item" style="cursor:pointer" onclick="viewBatchDetail('${esc(b.batch)}')">
+      <div>
+        <div class="batch-name">${b.batch}</div>
+        <div class="batch-meta">${(b.subjects || []).join(', ')}</div>
+      </div>
+      <span class="status-badge status-average">${b.studentCount || 0} students</span>
+    </div>
+  `).join('') || '<div class="empty-msg"><p>No data yet</p></div>';
+}
+
+async function loadBatchesForDashboard() {
+  try {
+    const resp = await apiGet('getBatches', { email: user.email, role: user.role, level: user.level, center: user.center });
+    if (resp.success && resp.data.batches) {
+      batchesData = resp.data.batches;
+      const scored = batchesData.filter(b => b.avgScore != null);
+      scored.sort((a, b) => b.avgScore - a.avgScore);
+
+      document.getElementById('topBatchesList').innerHTML = scored.slice(0, 5).map(b => `
+        <div class="dash-item" style="cursor:pointer" onclick="viewBatchDetail('${esc(b.batch)}')">
+          <div>
+            <div class="batch-name">${b.batch}</div>
+            <div class="batch-meta">${b.subjects.join(', ')}</div>
+          </div>
+          <span class="status-badge ${scoreBadge(b.avgScore)}">${b.avgScore}%</span>
+        </div>
+      `).join('') || '<div class="empty-msg"><p>No data yet</p></div>';
+
+      const botEl = document.getElementById('bottomBatchesList');
+      scored.reverse();
+      botEl.innerHTML = scored.slice(0, 5).map(b => `
+        <div class="dash-item" style="cursor:pointer" onclick="viewBatchDetail('${esc(b.batch)}')">
+          <div>
+            <div class="batch-name">${b.batch}</div>
+            <div class="batch-meta">${b.subjects.join(', ')}</div>
+          </div>
+          <span class="status-badge ${scoreBadge(b.avgScore)}">${b.avgScore}%</span>
+        </div>
+      `).join('') || '<div class="empty-msg"><p>No data yet</p></div>';
+    }
+  } catch (_) {
+    // Fallback to old backend data if available
+    if (batchesData.length > 0) renderDashboardFromOldBackend();
+  }
+}
+
+/* ===== batches.js ===== */
+// ============================================================
+//  batches.js — Batch list, filters, and batch detail view.
+//  Depends on: core.js (apiGet, showLoading, hideLoading, esc,
+//              scoreBadge, scoreLabel, fillSelect, navigate,
+//              user/batchesData/currentBatch/backendVersion)
+// ============================================================
+
+async function loadBatches() {
+  showLoading();
+  try {
+    if (backendVersion === 'old' && batchesData.length > 0) {
+      // Already loaded from dashboard
+      populateBatchFilters();
+      renderBatches(batchesData);
+      hideLoading();
+      return;
+    }
+    const resp = await apiGet('getBatches', { email: user.email, role: user.role, level: user.level, center: user.center });
+    if (resp.success && resp.data.batches) {
+      batchesData = resp.data.batches;
+      populateBatchFilters();
+      renderBatches(batchesData);
+    } else {
+      // Fallback to old dashboard data
+      if (batchesData.length > 0) {
+        populateBatchFilters();
+        renderBatches(batchesData);
+      } else {
+        renderBatches([]);
+      }
+    }
+  } catch (e) {
+    console.error('Batches error:', e);
+    // Fallback
+    if (batchesData.length > 0) {
+      populateBatchFilters();
+      renderBatches(batchesData);
+    }
+  }
+  hideLoading();
+}
+
+function populateBatchFilters() {
+  const subjects = [...new Set(batchesData.flatMap(b => b.subjects || []))].sort();
+  const faculty = [...new Set(batchesData.flatMap(b => (b.faculty || []).map(f => f.email)))].sort();
+  fillSelect('filterSubject', subjects, 'All Subjects');
+  fillSelect('filterFaculty', faculty, 'All Faculty');
+}
+
+function applyBatchFilters() {
+  const subject = document.getElementById('filterSubject').value;
+  const faculty = document.getElementById('filterFaculty').value;
+  const search = document.getElementById('filterBatchSearch').value.toLowerCase();
+
+  let filtered = batchesData;
+  if (subject) filtered = filtered.filter(b => (b.subjects || []).includes(subject));
+  if (faculty) filtered = filtered.filter(b => (b.faculty || []).some(f => f.email === faculty));
+  if (search) filtered = filtered.filter(b => (b.batch || '').toLowerCase().includes(search));
+
+  renderBatches(filtered);
+}
+
+function renderBatches(batches) {
+  const tbody = document.getElementById('batchTableBody');
+  if (batches.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-msg"><div class="empty-icon">&#128230;</div><p>No batches found</p></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = batches.map((b, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${b.batch}</strong> <span class="batch-center">(${esc(batchCenterName(b.batch))})</span></td>
+      <td>${(b.subjects || []).map(s => '<span class="subject-tag ' + s.toLowerCase() + '">' + s + '</span>').join('')}</td>
+      <td class="text-center"><strong>${b.studentCount || 0}</strong></td>
+      <td class="text-center">${(b.faculty || []).length}</td>
+      <td class="text-center">${b.avgScore != null ? '<strong>' + b.avgScore + '%</strong>' : '<span style="color:var(--pw-text-muted)">—</span>'}</td>
+      <td class="text-center">${b.avgScore != null ? '<span class="status-badge ' + scoreBadge(b.avgScore) + '">' + scoreLabel(b.avgScore) + '</span>' : '<span class="status-badge status-average">No Scores</span>'}</td>
+      <td><button class="btn-sm btn-view" onclick="viewBatchDetail('${esc(b.batch)}')">View</button></td>
+    </tr>
+  `).join('');
+}
+
+// ── BATCH DETAIL ───────────────────────────────────
+async function viewBatchDetail(batch) {
+  currentBatch = batch;
+  navigate('batchDetail');
+  document.getElementById('batchDetailTitle').textContent = 'Batch: ' + batch + (batchCenterName(batch) ? ' (' + batchCenterName(batch) + ')' : '');
+
+  // Populate subject filter from batch data
+  const batchInfo = batchesData.find(b => b.batch === batch);
+  const subSelect = document.getElementById('batchDetailSubject');
+  subSelect.innerHTML = '<option value="">Overall</option>';
+  if (batchInfo && batchInfo.subjects) {
+    batchInfo.subjects.forEach(s => {
+      subSelect.innerHTML += '<option value="' + s + '">' + s + '</option>';
+    });
+  }
+
+  await loadBatchDetail();
+}
+
+async function loadBatchDetail() {
+  const subject = document.getElementById('batchDetailSubject').value;
+  showLoading();
+  try {
+    const params = { batch: currentBatch, email: user.email, role: user.role, level: user.level, center: user.center };
+    if (subject) params.subject = subject;
+    const resp = await apiGet('getBatchDetail', params);
+    if (resp.success) {
+      renderBatchDetail(resp.data);
+      hideLoading();
+      return;
+    }
+  } catch (e) { console.error('getBatchDetail error:', e); }
+
+  // Fallback: render basic batch info from batchesData
+  renderBatchDetailFallback();
+  hideLoading();
+}
+
+function renderBatchDetailFallback() {
+  const batchInfo = batchesData.find(b => b.batch === currentBatch);
+  if (!batchInfo) {
+    document.getElementById('batchDetailStats').innerHTML = '<div class="empty-msg"><p>Batch not found. Please deploy the updated backend.</p></div>';
+    return;
+  }
+
+  document.getElementById('batchDetailStats').innerHTML = `
+    <div class="detail-stat"><div class="ds-value">${batchInfo.studentCount || 0}</div><div class="ds-label">Total Students</div></div>
+    <div class="detail-stat"><div class="ds-value">${(batchInfo.faculty || []).length}</div><div class="ds-label">Faculty Members</div></div>
+    <div class="detail-stat"><div class="ds-value">${(batchInfo.subjects || []).join(', ')}</div><div class="ds-label">Subjects</div></div>
+  `;
+
+  document.getElementById('toppersList').innerHTML = '<div class="perf-empty">Deploy updated backend to see student details</div>';
+  document.getElementById('averageList').innerHTML = '<div class="perf-empty">Deploy updated backend to see student details</div>';
+  document.getElementById('bottomList').innerHTML = '<div class="perf-empty">Deploy updated backend to see student details</div>';
+  document.getElementById('absentList').innerHTML = '<div class="perf-empty">Deploy updated backend to see student details</div>';
+  document.getElementById('toppersCount').textContent = '0';
+  document.getElementById('averageCount').textContent = '0';
+  document.getElementById('bottomCount').textContent = '0';
+  document.getElementById('absentCount').textContent = '0';
+
+  document.getElementById('batchStudentBody').innerHTML = '<tr><td colspan="7"><div class="empty-msg"><p>Deploy updated backend for student-level data</p></div></td></tr>';
+}
+
+function renderBatchDetail(d) {
+  document.getElementById('batchDetailStats').innerHTML = `
+    <div class="detail-stat"><div class="ds-value">${d.total}</div><div class="ds-label">Total Students</div></div>
+    <div class="detail-stat"><div class="ds-value" style="color:var(--pw-success)">${d.present}</div><div class="ds-label">Present</div></div>
+    <div class="detail-stat"><div class="ds-value" style="color:var(--pw-danger)">${d.absent}</div><div class="ds-label">Absent</div></div>
+    <div class="detail-stat"><div class="ds-value">${d.avgScore}%</div><div class="ds-label">Avg Score</div></div>
+    <div class="detail-stat"><div class="ds-value">${d.highScore}%</div><div class="ds-label">Highest</div></div>
+    <div class="detail-stat"><div class="ds-value">${d.lowScore}%</div><div class="ds-label">Lowest</div></div>
+  `;
+
+  renderPerfList('toppersList', d.toppers, true);
+  renderPerfList('averageList', d.average, true);
+  renderPerfList('bottomList', d.bottom, true);
+  renderAbsentList('absentList', d.absentees);
+
+  document.getElementById('toppersCount').textContent = d.toppers.length;
+  document.getElementById('averageCount').textContent = d.average.length;
+  document.getElementById('bottomCount').textContent = d.bottom.length;
+  document.getElementById('absentCount').textContent = d.absentees.length;
+
+  const tbody = document.getElementById('batchStudentBody');
+  const all = d.allStudents || [];
+  tbody.innerHTML = all.length === 0
+    ? '<tr><td colspan="7"><div class="empty-msg"><p>No data</p></div></td></tr>'
+    : all.map((s, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>${s.name || s.regno}</td>
+        <td style="font-size:12px;color:var(--pw-text-secondary)">${s.regno}</td>
+        <td class="text-center">${s.score != null ? s.score : '—'}</td>
+        <td class="text-center"><strong>${s.percentage != null ? s.percentage.toFixed(1) + '%' : '—'}</strong></td>
+        <td class="text-center">${s.rank || '—'}</td>
+        <td class="text-center">${s.tests}</td>
+      </tr>
+    `).join('');
+}
+
+/* ===== faculty.js ===== */
+// ============================================================
+//  faculty.js — Faculty list, filters, and rendering.
+//  Depends on: core.js (apiGet, showLoading, hideLoading,
+//              fillSelect, user/facultyData/backendVersion)
+// ============================================================
+
+async function loadFaculty() {
+  showLoading();
+  try {
+    if (backendVersion === 'old' && facultyData.length > 0) {
+      populateFacultyFilters();
+      renderFaculty(facultyData);
+      hideLoading();
+      return;
+    }
+    const resp = await apiGet('getFaculty', { email: user.email, role: user.role, level: user.level, center: user.center });
+    if (resp.success && resp.data.faculty) {
+      facultyData = resp.data.faculty;
+      populateFacultyFilters();
+      renderFaculty(facultyData);
+    } else if (facultyData.length > 0) {
+      populateFacultyFilters();
+      renderFaculty(facultyData);
+    } else {
+      renderFaculty([]);
+    }
+  } catch (e) {
+    console.error('Faculty error:', e);
+    if (facultyData.length > 0) {
+      renderFaculty(facultyData);
+    } else {
+      renderFaculty([]);
+    }
+  }
+  hideLoading();
+}
+
+function populateFacultyFilters() {
+  const centers = [...new Set(facultyData.map(f => f.center || ''))].filter(Boolean).sort();
+  fillSelect('filterFacCenter', centers, 'All Centers');
+}
+
+function applyFacultyFilters() {
+  const center = document.getElementById('filterFacCenter').value;
+  const search = document.getElementById('filterFacSearch').value.toLowerCase();
+  let filtered = facultyData;
+  if (center) filtered = filtered.filter(f => f.center === center);
+  if (search) filtered = filtered.filter(f => (f.email || '').toLowerCase().includes(search));
+  renderFaculty(filtered);
+}
+
+function renderFaculty(list) {
+  const tbody = document.getElementById('facultyTableBody');
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-msg"><div class="empty-icon">&#128105;&#8205;&#127891;</div><p>No faculty found</p></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map((f, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${(f.email || '').split('@')[0]}</strong><br><span style="font-size:12px;color:var(--pw-text-secondary)">${f.email || ''}</span></td>
+      <td style="font-size:13px">${f.center || ''}</td>
+      <td><span class="role-badge">${f.role || 'Faculty'}</span></td>
+      <td class="text-center"><strong>${(f.batches || []).length}</strong></td>
+      <td class="text-center"><strong>${f.totalStudents || 0}</strong></td>
+      <td class="text-center">${f.avgScore != null ? '<strong>' + f.avgScore + '%</strong>' : '<span style="color:var(--pw-text-muted)">—</span>'}</td>
+      <td>${(f.subjects || []).map(s => '<span class="subject-tag ' + s.toLowerCase() + '">' + s + '</span>').join('')}</td>
+    </tr>
+  `).join('');
+}
+
+/* ===== students.js ===== */
+// ============================================================
+//  students.js — Student list, filters, rendering, and the
+//                student detail view.
+//  Depends on: core.js (apiGet, showLoading, hideLoading, esc,
+//              fillSelect, navigate, studentsData)
+// ============================================================
+
+async function loadStudents() {
+  showLoading();
+  try {
+    const resp = await apiGet('getStudents', { email: user.email, role: user.role, level: user.level, center: user.center });
+    if (resp.success && resp.data.students) {
+      studentsData = resp.data.students;
+      populateStudentFilters();
+      renderStudents(studentsData);
+    } else {
+      renderStudentsEmpty('Deploy updated backend to view student data');
+    }
+  } catch (e) {
+    console.error('Students error:', e);
+    renderStudentsEmpty('Deploy updated backend to view student data');
+  }
+  hideLoading();
+}
+
+function renderStudentsEmpty(msg) {
+  const tbody = document.getElementById('studentTableBody');
+  tbody.innerHTML = '<tr><td colspan="8"><div class="empty-msg"><p>' + msg + '</p></div></td></tr>';
+}
+
+function populateStudentFilters() {
+  const batches = [...new Set(studentsData.map(s => s.batch))].sort();
+  fillSelect('filterStuBatch', batches, 'All Batches');
+}
+
+function applyStudentFilters() {
+  const batch = document.getElementById('filterStuBatch').value;
+  const sort = document.getElementById('filterStuSort').value;
+  const search = document.getElementById('filterStuSearch').value.toLowerCase();
+
+  let filtered = studentsData;
+  if (batch) filtered = filtered.filter(s => s.batch === batch);
+  if (search) filtered = filtered.filter(s =>
+    (s.name || '').toLowerCase().includes(search) || (s.regno || '').toLowerCase().includes(search));
+
+  if (sort === 'score_desc') filtered.sort((a, b) => (b.avgScore || 0) - (a.avgScore || 0));
+  else if (sort === 'score_asc') filtered.sort((a, b) => (a.avgScore || 0) - (b.avgScore || 0));
+  else if (sort === 'name') filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+  else if (sort === 'tests') filtered.sort((a, b) => b.tests - a.tests);
+
+  renderStudents(filtered);
+}
+
+function renderStudents(list) {
+  const tbody = document.getElementById('studentTableBody');
+  if (list.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-msg"><div class="empty-icon">&#127891;</div><p>No students found</p></div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map((s, i) => `
+    <tr>
+      <td>${i + 1}</td>
+      <td><strong>${s.name || '—'}</strong></td>
+      <td style="font-size:12px;color:var(--pw-text-secondary)">${s.regno}</td>
+      <td>${s.batch} <span class="batch-center">(${esc(batchCenterName(s.batch))})</span></td>
+      <td class="text-center">${s.tests}</td>
+      <td class="text-center">${s.avgScore != null ? '<strong>' + s.avgScore + '%</strong>' : '<span style="color:var(--pw-text-muted)">No tests</span>'}</td>
+      <td>${s.bestSubject && s.bestSubject !== '—' ? '<span class="subject-tag ' + s.bestSubject.toLowerCase() + '">' + s.bestSubject + '</span>' : '—'}</td>
+      <td><button class="btn-sm btn-view" onclick="viewStudentDetail('${esc(s.regno)}')">View</button></td>
+    </tr>
+  `).join('');
+}
+
+// ── STUDENT DETAIL ─────────────────────────────────
+async function viewStudentDetail(regno) {
+  navigate('studentDetail');
+  showLoading();
+  try {
+    const resp = await apiGet('getStudentDetail', { regno });
+    if (resp.success) {
+      renderStudentDetail(resp.data);
+    } else {
+      document.getElementById('stuDetailTitle').textContent = 'Student: ' + regno;
+      document.getElementById('stuDetailStats').innerHTML = '<div class="empty-msg"><p>Deploy updated backend for student details</p></div>';
+    }
+  } catch (e) {
+    console.error(e);
+    document.getElementById('stuDetailTitle').textContent = 'Student: ' + regno;
+    document.getElementById('stuDetailStats').innerHTML = '<div class="empty-msg"><p>Deploy updated backend for student details</p></div>';
+  }
+  hideLoading();
+}
+
+function renderStudentDetail(d) {
+  const s = d.student;
+  document.getElementById('stuDetailTitle').textContent = (s.name || s.regno) + ' — ' + s.batch;
+
+  document.getElementById('stuDetailStats').innerHTML = `
+    <div class="detail-stat"><div class="ds-value">${s.regno}</div><div class="ds-label">Registration No</div></div>
+    <div class="detail-stat"><div class="ds-value">${s.batch}</div><div class="ds-label">Batch</div></div>
+    <div class="detail-stat"><div class="ds-value">${s.testsTaken}</div><div class="ds-label">Tests Taken</div></div>
+    <div class="detail-stat"><div class="ds-value">${s.avgScore}%</div><div class="ds-label">Avg Score</div></div>
+  `;
+
+  const subjs = ['physics','chemistry','maths','zoology','botany'];
+  const labels = ['Physics','Chemistry','Maths','Zoology','Botany'];
+  document.getElementById('studentSubjectBars').innerHTML = subjs.map((s2, i) => {
+    const val = (s.subjectAverages && s.subjectAverages[s2]) || 0;
+    return `
+      <div class="sub-bar-card">
+        <div class="sub-bar-label">${labels[i]}</div>
+        <div class="sub-bar-value">${val > 0 ? val + '%' : '—'}</div>
+        <div class="sub-bar-track"><div class="sub-bar-fill ${s2}" style="width:${val}%"></div></div>
+      </div>
+    `;
+  }).join('');
+
+  const tbody = document.getElementById('stuDetailTestBody');
+  const tests = d.tests || [];
+  tbody.innerHTML = tests.length === 0
+    ? '<tr><td colspan="10"><div class="empty-msg"><p>No test history</p></div></td></tr>'
+    : tests.reverse().map(t => `
+      <tr>
+        <td>${t.testDate || '—'}</td>
+        <td>${t.testType || '—'}</td>
+        <td class="text-center">${t.physics != null ? t.physics : '—'}</td>
+        <td class="text-center">${t.chemistry != null ? t.chemistry : '—'}</td>
+        <td class="text-center">${t.maths != null ? t.maths : '—'}</td>
+        <td class="text-center">${t.zoology != null ? t.zoology : '—'}</td>
+        <td class="text-center">${t.botany != null ? t.botany : '—'}</td>
+        <td class="text-center"><strong>${t.score}</strong></td>
+        <td class="text-center"><strong>${t.percentage.toFixed(1)}%</strong></td>
+        <td class="text-center">${t.rank || '—'}</td>
+      </tr>
+    `).join('');
+}
+
+/* ===== perf.js ===== */
+// ============================================================
+//  perf.js — Shared performance list renderers (toppers,
+//            average, bottom, absentees).
+//  Depends on: core.js (no direct deps, uses DOM only)
+// ============================================================
+
+function renderPerfList(containerId, students, showScore) {
+  const el = document.getElementById(containerId);
+  if (!students || students.length === 0) {
+    el.innerHTML = '<div class="perf-empty">No data</div>';
+    return;
+  }
+  el.innerHTML = students.map((s, i) => `
+    <div class="perf-item">
+      <span class="perf-rank">#${i + 1}</span>
+      <span class="perf-name">${s.name || s.regno}</span>
+      ${showScore ? '<span class="perf-score">' + (s.percentage != null ? (s.percentage > 1 ? s.percentage.toFixed(1) : (s.percentage * 100).toFixed(1)) + '%' : '—') + '</span>' : ''}
+    </div>
+  `).join('');
+}
+
+function renderAbsentList(containerId, students) {
+  const el = document.getElementById(containerId);
+  if (!students || students.length === 0) {
+    el.innerHTML = '<div class="perf-empty">No absentees</div>';
+    return;
+  }
+  el.innerHTML = students.map(s => `
+    <div class="perf-item">
+      <span class="perf-name">${s.name || s.regno}</span>
+      <span class="perf-score" style="color:var(--pw-danger);font-size:12px">Absent</span>
+    </div>
+  `).join('');
+}
+
+
+
+  </script>
+</body>
+</html>

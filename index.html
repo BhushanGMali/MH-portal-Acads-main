@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PW Maharashtra — Faculty Performance Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="assets/pw-favicon.webp" type="image/webp">
+</head>
+<body>
+
+  <!--
+    HTML is split into partial files (screen-login.html, screen-forgot.html,
+    screen-signup.html, screen-app.html, overlay.html) and injected here by
+    loader.js. Each placeholder below receives one partial.
+  -->
+  <div id="screen-login"></div>
+  <div id="screen-forgot"></div>
+  <div id="screen-signup"></div>
+  <div id="screen-app"></div>
+  <div id="screen-overlay"></div>
+
+  <!-- Load order matters: loader first, then core, then feature modules -->
+  <script src="loader.js"></script>
+  <script src="core.js"></script>
+  <script src="auth.js"></script>
+  <script src="data.js"></script>
+  <script src="home.js"></script>
+  <script src="student.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="batches.js"></script>
+  <script src="faculty.js"></script>
+  <script src="students.js"></script>
+  <script src="perf.js"></script>
+</body>
+</html>

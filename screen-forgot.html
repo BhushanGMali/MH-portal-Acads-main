@@ -1,0 +1,65 @@
+<!-- ============================================================
+     screen-forgot.html — FORGOT PASSWORD SCREEN
+     Loaded into #screen-forgot by loader.js
+     ============================================================ -->
+<div id="forgotScreen" class="screen">
+  <div class="login-wrapper">
+    <div class="login-left">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="login-brand">
+        <img src="assets/pw-logo.webp" alt="Physics Wallah" class="pw-logo-hero">
+        <h1>Physics Wallah</h1>
+        <p class="login-tagline">Reset your password securely</p>
+      </div>
+      <div class="login-stats">
+        <div class="stat-chip"><span class="stat-num" data-count="33601">0</span><span class="stat-label">Students Tracked</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="640">0</span><span class="stat-label">Batches Live</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="402">0</span><span class="stat-label">Faculty Onboard</span></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-logo">
+          <img src="assets/pw-logo.webp" alt="PW" class="pw-logo-sm-login">
+        </div>
+        <h2><span class="grad-head">Forgot Password</span></h2>
+        <p class="login-subtitle">3 quick steps to get back in</p>
+        <div class="steps" id="forgotSteps">
+          <span class="step-dot active" data-step="1"></span>
+          <span class="step-dot" data-step="2"></span>
+          <span class="step-dot" data-step="3"></span>
+        </div>
+        <form id="forgotForm" onsubmit="handleForgot(event)">
+          <div class="input-group">
+            <label>Email or PWID</label>
+            <input type="text" id="forgotId" placeholder="Enter email or PWID" required>
+          </div>
+          <button type="submit" class="btn-primary">Send OTP</button>
+        </form>
+        <form id="otpForm" style="display:none" onsubmit="handleVerifyOTP(event)">
+          <div class="input-group">
+            <label>Enter OTP</label>
+            <input type="text" id="otpInput" placeholder="6-digit OTP" maxlength="6" required>
+          </div>
+          <button type="submit" class="btn-primary">Verify OTP</button>
+        </form>
+        <form id="resetForm" style="display:none" onsubmit="handleResetPassword(event)">
+          <div class="input-group">
+            <label>New Password</label>
+            <input type="password" id="newPassword" placeholder="Min 4 characters" required>
+          </div>
+          <div class="input-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+          </div>
+          <button type="submit" class="btn-primary">Reset Password</button>
+        </form>
+        <a href="#" class="forgot-link" onclick="showScreen('loginScreen')">&larr; Back to Login</a>
+        <div id="forgotError" class="alert alert-error"></div>
+        <div id="forgotSuccess" class="alert alert-success"></div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<!-- ============================================================
+     screen-login.html — LOGIN SCREEN
+     Loaded into #screen-login by loader.js
+     ============================================================ -->
+<div id="loginScreen" class="screen active">
+  <div class="login-wrapper">
+    <div class="login-left">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="login-brand">
+        <img src="assets/pw-logo.webp" alt="Physics Wallah" class="pw-logo-hero">
+        <h1>Physics Wallah</h1>
+        <p class="login-tagline">Maharashtra Region — Faculty Performance Portal</p>
+      </div>
+      <div class="login-stats">
+        <div class="stat-chip"><span class="stat-num" data-count="33601">0</span><span class="stat-label">Students Tracked</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="640">0</span><span class="stat-label">Batches Live</span></div>
+        <div class="stat-chip"><span class="stat-num" data-count="402">0</span><span class="stat-label">Faculty Onboard</span></div>
+      </div>
+      <div class="login-features">
+        <div class="feature-item"><span class="feat-icon">&#128202;</span><span>Track Batch Performance</span></div>
+        <div class="feature-item"><span class="feat-icon">&#128105;&#8205;&#127891;</span><span>Faculty Productivity Insights</span></div>
+        <div class="feature-item"><span class="feat-icon">&#127919;</span><span>Student Progress Analytics</span></div>
+        <div class="feature-item"><span class="feat-icon">&#127942;</span><span>Top & Bottom Performers</span></div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-card">
+        <div class="login-card-logo">
+          <img src="assets/pw-logo.webp" alt="PW" class="pw-logo-sm-login">
+        </div>
+        <h2><span class="grad-head">Welcome Back</span></h2>
+        <p class="login-subtitle">Sign in to your dashboard</p>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="input-group">
+            <label for="loginId">Email or PWID</label>
+            <input type="text" id="loginId" placeholder="Enter your email or PWID" required autocomplete="username">
+          </div>
+          <div class="input-group">
+            <label for="loginPassword">Password</label>
+            <div class="password-wrapper">
+              <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password">
+              <button type="button" class="pass-toggle" onclick="togglePass('loginPassword', this)" tabindex="-1">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary" id="loginBtn">
+            <span>Sign In</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+        <a href="#" class="forgot-link" onclick="showScreen('forgotScreen')">Forgot Password?</a>
+        <div class="signup-link-row">
+          <span class="signup-muted">Don't have an account?</span>
+          <a href="#" class="signup-link" onclick="openSignup()">Sign Up</a>
+        </div>
+        <div id="loginError" class="alert alert-error"></div>
+      </div>
+    </div>
+  </div>
+</div>

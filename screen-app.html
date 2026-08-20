@@ -1,0 +1,519 @@
+<!-- ============================================================
+     screen-app.html — MAIN APP SCREEN
+     Top navbar + all views (dashboard, batches, batchDetail,
+     faculty, students, studentDetail).
+     Loaded into #screen-app by loader.js
+     ============================================================ -->
+<div id="appScreen" class="screen">
+  <!-- TOP NAVBAR -->
+  <header class="topnav" id="topnav">
+    <div class="topnav-left">
+      <img src="assets/pw-logo.webp" alt="PW" class="topnav-logo">
+      <div class="topnav-brand">
+        <span class="topnav-title">PW Vidyapeeth</span>
+        <span class="topnav-subtitle">Maharashtra Region</span>
+      </div>
+    </div>
+    <div class="topnav-right">
+      <span class="live-pill" title="Live data"><span class="live-dot"></span> Live</span>
+      <button class="btn-help" onclick="openHelp()" title="Help & User Guide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Help</span>
+      </button>
+      <button class="btn-request-access" onclick="openCenterChange()" title="Request access to another center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span>Request Access</span>
+      </button>
+      <button class="btn-change-center" id="reloadDataBtn" onclick="reloadData()" title="Reload Data">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-9-9"/><polyline points="21 3 21 9 15 9"/></svg>
+        <span>Reload Data</span>
+      </button>
+      <button class="btn-theme-toggle" onclick="toggleTheme()" title="Toggle dark / light mode" aria-label="Toggle theme">
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="topnav-user">
+        <div class="user-avatar" id="userAvatar">A</div>
+        <div class="topnav-user-info">
+          <span class="topnav-user-name" id="topbarEmail">admin@pw.live</span>
+          <span class="role-badge" id="topbarRole">Admin</span>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()" title="Sign Out">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- CENTER ACCESS REQUEST MODAL -->
+  <div class="modal-overlay" id="centerChangeModal" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Request Center Access</h3>
+        <button type="button" class="modal-close" onclick="closeCenterChange()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="cc-current">Need access to another center? Fill this form and the admin will approve it.</p>
+        <div class="req-form">
+          <div class="req-field">
+            <label class="cc-label">Mail ID</label>
+            <input type="email" class="req-input" id="reqEmail" placeholder="you@pw.live">
+          </div>
+          <div class="req-field">
+            <label class="cc-label">PW ID</label>
+            <input type="text" class="req-input" id="reqPwid" placeholder="PWID">
+          </div>
+          <div class="req-field">
+            <label class="cc-label">Center</label>
+            <select class="req-input" id="reqCenter"></select>
+          </div>
+          <div class="req-field">
+            <label class="cc-label">Remark</label>
+            <textarea class="req-input req-textarea" id="reqRemark" placeholder="Why do you need access to this center?"></textarea>
+          </div>
+        </div>
+        <div class="cc-message" id="ccMessage"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeCenterChange()">Cancel</button>
+        <button type="button" class="btn-submit" id="ccSubmitBtn" onclick="submitCenterChange()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <main class="main-content">
+
+    <!-- HOME VIEW (unified) -->
+    <div id="view-home" class="view active">
+      <div class="home-error" id="homeError"></div>
+
+      <!-- FILTER PANEL -->
+      <div class="home-filters">
+        <div class="filter-row">
+          <div class="filter-group"><label>Center</label><select id="homeFilterCenter" onchange="onHomeCenterChange()"><option value="">All Centers</option></select></div>
+          <div class="filter-group"><label>Class / Stream</label><select id="homeFilterStream" onchange="onHomeStreamChange()"><option value="">All Classes</option></select></div>
+          <div class="filter-group"><label>Batch</label><select id="homeFilterBatch" onchange="onHomeBatchChange()"><option value="">All Batches</option></select></div>
+          <div class="filter-group"><label>Faculty</label><select id="homeFilterFaculty" onchange="onHomeFacultyChange()"><option value="">All Faculty</option></select></div>
+          <div class="filter-group"><label>From Date</label><input type="date" id="homeDateFrom" onchange="onHomeDateChange()"></div>
+          <div class="filter-group"><label>To Date</label><input type="date" id="homeDateTo" onchange="onHomeDateChange()"></div>
+          <div class="filter-group filter-reset"><button type="button" class="btn-reset" onclick="resetHomeFilters()">Reset</button></div>
+        </div>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="stats-grid home-stats">
+        <div class="stat-card stat-purple">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number stat-number-sm" id="homeKpiCenter">—</div>
+            <div class="stat-label">Center</div>
+          </div>
+        </div>
+        <div class="stat-card stat-blue">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiBatches">0</div>
+            <div class="stat-label">Total Batches</div>
+          </div>
+        </div>
+        <div class="stat-card stat-green">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiStudents">0</div>
+            <div class="stat-label">Total Students</div>
+          </div>
+        </div>
+        <div class="stat-card stat-orange">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiFaculty">0</div>
+            <div class="stat-label">Total Faculty</div>
+          </div>
+        </div>
+        <div class="stat-card stat-cyan">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiAvg">0%</div>
+            <div class="stat-label">Avg Score</div>
+          </div>
+        </div>
+        <div class="stat-card stat-teal">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiAvgStudents">0</div>
+            <div class="stat-sub" id="homeKpiAvgStudentsPct"></div>
+            <div class="stat-label">Average Students</div>
+          </div>
+        </div>
+        <div class="stat-card stat-red">
+          <div class="stat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-number" id="homeKpiAbsent">0</div>
+            <div class="stat-sub" id="homeKpiAbsentPct"></div>
+            <div class="stat-label">Absent Students</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOPPER / BOTTOM STUDENTS -->
+      <div class="home-grid">
+        <div class="table-card">
+          <div class="card-head">
+            <h3 class="card-title">&#127942; Topper Students</h3>
+            <div class="topn-control">
+              <label>Top <input type="number" id="topperN" value="10" min="1" max="500" onchange="onTopNChange('topper')"></label>
+              <button type="button" class="btn-download" onclick="showDownloadMenu(this,'topper')">&#11015; Download</button>
+            </div>
+          </div>
+          <div class="table-scroll table-scroll--fixed">
+            <table class="data-table">
+              <thead id="homeTopperHead"><tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th><th class="text-center">Tests Taken</th><th class="text-center">Batch Tests</th><th class="text-center">Avg Score</th><th class="text-center">Avg %</th></tr></thead>
+              <tbody id="homeTopperBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="table-card">
+          <div class="card-head">
+            <h3 class="card-title">&#9888;&#65039; Bottom Performing Students</h3>
+            <div class="topn-control">
+              <label>Bottom <input type="number" id="bottomN" value="10" min="1" max="500" onchange="onTopNChange('bottom')"></label>
+              <button type="button" class="btn-download" onclick="showDownloadMenu(this,'bottom')">&#11015; Download</button>
+            </div>
+          </div>
+          <div class="table-scroll table-scroll--fixed">
+            <table class="data-table">
+              <thead id="homeBottomHead"><tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th><th class="text-center">Tests Taken</th><th class="text-center">Batch Tests</th><th class="text-center">Avg Score</th><th class="text-center">Avg %</th></tr></thead>
+              <tbody id="homeBottomBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEST / BOTTOM BATCH -->
+      <div class="home-grid">
+        <div class="dash-card">
+          <h3>&#127942; Best Batch</h3>
+          <div id="homeBestBatch" class="dash-list"></div>
+        </div>
+        <div class="dash-card">
+          <h3>&#9888;&#65039; Bottom Batch</h3>
+          <div id="homeBottomBatch" class="dash-list"></div>
+        </div>
+      </div>
+
+      <!-- ABSENT STUDENTS -->
+      <div class="table-card" style="margin-top:20px">
+        <div class="card-head">
+          <h3 class="card-title">&#10060; Absent Students (No papers given yet)</h3>
+          <button type="button" class="btn-download" onclick="showDownloadMenu(this,'absent')">&#11015; Download</button>
+        </div>
+        <div class="table-scroll table-scroll--fixed">
+          <table class="data-table">
+            <thead><tr><th style="width:40px">#</th><th>Name</th><th>Reg No</th><th>Stream</th><th>Batch</th><th class="text-center">Papers Not Given</th></tr></thead>
+            <tbody id="homeAbsentBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BATCH-WISE SUBJECT AVERAGE -->
+      <div class="table-card" style="margin-top:20px">
+        <div class="card-head">
+          <h3 class="card-title">&#128202; Batch-wise Subject Average (%)</h3>
+          <button type="button" class="btn-download" onclick="showDownloadMenu(this,'batchAvg')">&#11015; Download</button>
+        </div>
+        <div class="table-scroll table-scroll--fixed">
+          <table class="data-table">
+            <thead><tr><th style="width:40px">#</th><th>Batch</th><th>Center</th><th class="text-center">Avg Score</th><th class="text-center">Physics</th><th class="text-center">Chemistry</th><th class="text-center">Maths</th><th class="text-center">Zoology</th><th class="text-center">Botany</th></tr></thead>
+            <tbody id="homeBatchAvgBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SUBJECT GRAPH -->
+      <div class="dash-card" style="margin-top:20px">
+        <h3>&#128200; Subject Performance</h3>
+        <div id="homeSubjectGraph"></div>
+      </div>
+    </div>
+
+    <!-- STUDENT SEARCH VIEW -->
+    <div id="view-student" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group filter-search">
+            <label>Student Reg No</label>
+            <input type="text" id="studentSearchInput" placeholder="Enter reg no..." onkeydown="if(event.key==='Enter')searchStu()">
+          </div>
+          <div class="filter-group filter-reset"><button type="button" class="btn-reset" onclick="searchStu()">Search</button></div>
+        </div>
+      </div>
+      <div class="home-error" id="studentError"></div>
+      <div id="studentResult" style="display:none">
+        <div class="detail-stats" id="studentDetailStats"></div>
+        <div class="dash-card" style="margin-top:20px">
+          <h3>&#128200; Subject-wise % per Test</h3>
+          <div id="studentSubjectGraph"></div>
+        </div>
+        <div class="table-card" style="margin-top:20px">
+          <h3 class="card-title">Test History</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead id="studentTestHead"><tr><th>Date</th><th>Type</th><th class="text-center">Total</th><th class="text-center">Score</th><th class="text-center">%</th><th class="text-center">Rank</th></tr></thead>
+              <tbody id="studentTestBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BATCHES VIEW -->
+    <div id="view-batches" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Subject</label><select id="filterSubject" onchange="applyBatchFilters()"><option value="">All Subjects</option></select></div>
+          <div class="filter-group"><label>Faculty</label><select id="filterFaculty" onchange="applyBatchFilters()"><option value="">All Faculty</option></select></div>
+          <div class="filter-group"><label>Search</label><input type="text" id="filterBatchSearch" placeholder="Search batch..." oninput="applyBatchFilters()"></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="batchTable">
+          <thead><tr><th style="width:40px">#</th><th>Batch</th><th>Subjects</th><th class="text-center">Students</th><th class="text-center">Faculty</th><th class="text-center">Avg Score</th><th class="text-center">Status</th><th>Action</th></tr></thead>
+          <tbody id="batchTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BATCH DETAIL VIEW -->
+    <div id="view-batchDetail" class="view">
+      <div class="detail-header">
+        <button class="btn-back" onclick="navigate('batches')">&larr; Back to Batches</button>
+        <h2 id="batchDetailTitle">Batch Details</h2>
+      </div>
+      <div class="detail-stats" id="batchDetailStats"></div>
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Subject</label><select id="batchDetailSubject" onchange="loadBatchDetail()"><option value="">Overall</option></select></div>
+        </div>
+      </div>
+      <div class="perf-grid" id="batchPerfGrid">
+        <div class="perf-card perf-toppers"><div class="perf-card-header"><span class="perf-icon">&#127942;</span><h4>Toppers <span class="perf-count" id="toppersCount">0</span></h4></div><div class="perf-card-body" id="toppersList"></div></div>
+        <div class="perf-card perf-average"><div class="perf-card-header"><span class="perf-icon">&#128200;</span><h4>Average <span class="perf-count" id="averageCount">0</span></h4></div><div class="perf-card-body" id="averageList"></div></div>
+        <div class="perf-card perf-bottom"><div class="perf-card-header"><span class="perf-icon">&#9888;&#65039;</span><h4>Needs Improvement <span class="perf-count" id="bottomCount">0</span></h4></div><div class="perf-card-body" id="bottomList"></div></div>
+        <div class="perf-card perf-absent"><div class="perf-card-header"><span class="perf-icon">&#10060;</span><h4>Absent <span class="perf-count" id="absentCount">0</span></h4></div><div class="perf-card-body" id="absentList"></div></div>
+      </div>
+      <div class="table-card" style="margin-top:20px">
+        <h3 style="padding:16px 20px 0;font-size:16px;color:#374151">All Students</h3>
+        <table class="data-table" id="batchStudentTable">
+          <thead><tr><th style="width:40px">#</th><th>Name</th><th>Reg No</th><th class="text-center">Score</th><th class="text-center">%</th><th class="text-center">Rank</th><th class="text-center">Tests</th></tr></thead>
+          <tbody id="batchStudentBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FACULTY VIEW -->
+    <div id="view-faculty" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Center</label><select id="filterFacCenter" onchange="applyFacultyFilters()"><option value="">All Centers</option></select></div>
+          <div class="filter-group"><label>Search</label><input type="text" id="filterFacSearch" placeholder="Search faculty..." oninput="applyFacultyFilters()"></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="facultyTable">
+          <thead><tr><th style="width:40px">#</th><th>Faculty</th><th>Center</th><th>Role</th><th class="text-center">Batches</th><th class="text-center">Students</th><th class="text-center">Avg Score</th><th>Subjects</th></tr></thead>
+          <tbody id="facultyTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STUDENTS VIEW -->
+    <div id="view-students" class="view">
+      <div class="view-toolbar">
+        <div class="filter-row">
+          <div class="filter-group"><label>Batch</label><select id="filterStuBatch" onchange="applyStudentFilters()"><option value="">All Batches</option></select></div>
+          <div class="filter-group"><label>Sort By</label><select id="filterStuSort" onchange="applyStudentFilters()"><option value="score_desc">Score (High-Low)</option><option value="score_asc">Score (Low-High)</option><option value="name">Name (A-Z)</option><option value="tests">Tests Taken</option></select></div>
+          <div class="filter-group"><label>Search</label><input type="text" id="filterStuSearch" placeholder="Search name or reg no..." oninput="applyStudentFilters()"></div>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="studentTable">
+          <thead><tr><th style="width:40px">#</th><th>Name</th><th>Reg No</th><th>Batch</th><th class="text-center">Tests</th><th class="text-center">Avg Score</th><th>Best Subject</th><th>Action</th></tr></thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STUDENT DETAIL VIEW -->
+    <div id="view-studentDetail" class="view">
+      <div class="detail-header">
+        <button class="btn-back" onclick="navigate('students')">&larr; Back to Students</button>
+        <h2 id="stuDetailTitle">Student Details</h2>
+      </div>
+      <div class="detail-stats" id="stuDetailStats"></div>
+      <div class="subject-bars" id="studentSubjectBars"></div>
+      <div class="table-card" style="margin-top:20px">
+        <h3 style="padding:16px 20px 0;font-size:16px;color:#374151">Test History</h3>
+        <table class="data-table" id="stuDetailTestTable">
+          <thead><tr><th>Date</th><th>Test Type</th><th class="text-center">Physics</th><th class="text-center">Chemistry</th><th class="text-center">Maths</th><th class="text-center">Zoology</th><th class="text-center">Botany</th><th class="text-center">Total</th><th class="text-center">%</th><th class="text-center">Rank</th></tr></thead>
+          <tbody id="stuDetailTestBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <span class="footer-made">This Portal is created by <strong>Ambikesh Srivastava</strong> (<a href="mailto:Ambikesh.srivastava@pw.live">Ambikesh.srivastava@pw.live</a>)</span>
+    <span class="footer-note">Kindly Connect him if any query rises.</span>
+  </footer>
+
+  <!-- HELP / USER GUIDE MODAL -->
+  <div class="modal-overlay" id="helpModal" style="display:none" onclick="if(event.target===this)closeHelp()">
+    <div class="modal modal-help">
+      <div class="modal-header">
+        <h3>&#128161; Help &amp; User Guide</h3>
+        <button type="button" class="modal-close" onclick="closeHelp()">&times;</button>
+      </div>
+      <div class="modal-body help-body">
+
+        <div class="help-section">
+          <h4>About this Portal</h4>
+          <p>This portal shows faculty and student performance for the PW Maharashtra Region. Data is pulled live from the shared Google Sheets. Everything you see changes based on the filters you pick.</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127968; Home — Filters</h4>
+          <p>The filter bar applies to <strong>everything</strong> on the Home screen (KPIs, tables, graphs):</p>
+          <ul>
+            <li><strong>Center</strong> — only the selected center's batches/students.</li>
+            <li><strong>Class / Stream</strong> — e.g. Dropper NEET, Dropper JEE.</li>
+            <li><strong>Batch</strong> — a single batch, e.g. 60-YN511CP.</li>
+            <li><strong>Faculty</strong> — only the faculty member's own batches.</li>
+            <li><strong>From / To Date</strong> — only tests between these dates.</li>
+          </ul>
+          <p>Use <strong>Reset</strong> to clear everything back to All.</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128202; Home — KPI Cards</h4>
+          <ul>
+            <li><strong>Center</strong> — which center(s) you are viewing.</li>
+            <li><strong>Total Batches</strong> — batches that had at least one test.</li>
+            <li><strong>Total Students</strong> — students who gave at least one test.</li>
+            <li><strong>Total Faculty</strong> — faculty mapped to the visible batches.</li>
+            <li><strong>Avg Score</strong> — average of every test's percentage (marks %).</li>
+            <li><strong>Average Students</strong> — students whose average is within &#177;5% of the overall average (the % below = share of total students).</li>
+            <li><strong>Absent Students</strong> — students who gave no test in the selected scope (the % below = share of total students).</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127942; Home — Topper &amp; Bottom Students</h4>
+          <p>Lists the students with the highest / lowest average percentage.</p>
+          <ul>
+            <li><strong>Top / Bottom &lt;number&gt;</strong> — type any number (1-500) to see that many students; default is 10.</li>
+            <li><strong>Tests</strong> — how many tests that student gave.</li>
+            <li><strong>Avg %</strong> — average of the student's test percentages. Subject columns show the latest test's subject marks.</li>
+            <li>Download (&#11015;) exports the currently visible list.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127942; Home — Best / Bottom Batch</h4>
+          <p>The batch with the highest / lowest average percentage, plus its top 3 students.</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#10060; Home — Absent Students</h4>
+          <p>Students whose batch had a test but who gave <strong>no test</strong> in the selected scope.</p>
+          <ul>
+            <li><strong>Papers Not Given</strong> — how many of the batch's tests they missed.</li>
+            <li>Name / stream come from the Students sheet.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128202; Home — Batch-wise Subject Average</h4>
+          <p>For every batch: its overall average percentage plus each subject's share.</p>
+          <ul>
+            <li>Subject % = that subject's marks &#247; total score &#215; 100, averaged across the batch's tests.</li>
+            <li>A NEET batch shows Maths as 0% because NEET papers have no Maths.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128200; Home — Subject Performance Graph</h4>
+          <p>Per test date, the average of each student's subject share (subject marks &#247; score &#215; 100).</p>
+          <ul>
+            <li>Hover any point to see the date, the <strong>average score</strong> of that test and each subject's %.</li>
+            <li>Faculty users only see their own subjects.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128269; Student — Single Lookup</h4>
+          <p>Enter a registration number and press Search to see that student's performance graph and full test history (date, type, total, score, %, rank).</p>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128218; Batches</h4>
+          <p>List of batches with their subjects, student count, faculty count and average score.</p>
+          <ul>
+            <li>Filters: <strong>Subject</strong>, <strong>Faculty</strong>, <strong>Search</strong>.</li>
+            <li>Click <strong>View</strong> on a batch to open its detail page: Toppers / Average / Needs Improvement / Absent cards plus the full student list with ranks.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#128105;&#8205;&#127891; Faculty</h4>
+          <p>List of faculty with their batches, subjects and centers.</p>
+          <ul>
+            <li>Filters: <strong>Center</strong>, <strong>Search</strong>.</li>
+            <li>Faculty accounts only see their own batches and subjects everywhere in the portal.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#127919; Students</h4>
+          <p>List of all students with tests given, average score and best subject.</p>
+          <ul>
+            <li>Filters: <strong>Batch</strong>, <strong>Sort By</strong> (score / name / tests), <strong>Search</strong>.</li>
+            <li>Click a student to open their detail page: stats, subject bars and test history.</li>
+          </ul>
+        </div>
+
+        <div class="help-section">
+          <h4>&#129518; How Calculations Work</h4>
+          <ul>
+            <li><strong>Student Avg %</strong> = average of the student's test percentages (marks % column).</li>
+            <li><strong>Batch Avg %</strong> = average of all its students' test percentages.</li>
+            <li><strong>Subject %</strong> = subject marks &#247; total score &#215; 100 (per test, averaged per student).</li>
+            <li><strong>Tests</strong> = tests with a score above zero.</li>
+            <li><strong>Rank</strong> = position by score within the test / batch.</li>
+            <li><strong>Average Students</strong> = students within &#177;5% of the overall average score.</li>
+          </ul>
+        </div>
+
+        <div class="help-section help-credit">
+          <p>This Portal is created by <strong>Ambikesh Srivastava</strong> (<a href="mailto:Ambikesh.srivastava@pw.live">Ambikesh.srivastava@pw.live</a>).</p>
+          <p>Kindly Connect him if any query rises.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-nav" id="mobileNav">
+    <a href="#" class="mobile-nav-link active" data-view="home" onclick="navigate('home')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="#" class="mobile-nav-link" data-view="student" onclick="navigate('student')">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5"/></svg>
+      <span>Student</span>
+    </a>
+  </nav>
+</div>
