@@ -67,7 +67,7 @@ function renderStuDetail(detail) {
     <tr>
       <td>${esc(t.date)}</td>
       <td>${esc(t.type)}</td>
-      ${subs.map(s => `<td class="text-center">${t.subjects[s] > 0 ? t.subjects[s] : '—'}</td>`).join('')}
+      ${subs.map(s => `<td class="text-center">${t.subjects[s] !== 0 ? t.subjects[s] : '—'}</td>`).join('')}
       <td class="text-center">${t.total}</td>
       <td class="text-center">${t.score}</td>
       <td class="text-center"><span class="status-badge ${scoreBadge(t.pct)}">${t.pct}%</span></td>

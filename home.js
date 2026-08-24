@@ -185,7 +185,7 @@ function renderStudentTable(bodyId, students, n) {
       <td class="text-center">${s.testCount || 0} / ${s.batchTotalTests || 0}</td>
       <td class="text-center"><span class="status-badge ${scoreBadge(s.avg)}">${s.avgUserScore || 0} / ${s.avg}%</span></td>
       <td class="text-center">${attCell(s.att15, s.attOverall)}</td>
-      ${subs.map(sub => `<td class="text-center">${s[sub] > 0 ? s[sub] : '—'}</td>`).join('')}
+      ${subs.map(sub => `<td class="text-center">${s[sub] !== 0 ? s[sub] : '—'}</td>`).join('')}
     </tr>
   `).join('') || '<tr><td colspan="' + (7 + subs.length) + '" class="empty-msg"><p>No data</p></td></tr>';
 }
