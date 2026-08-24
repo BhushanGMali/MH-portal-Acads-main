@@ -170,6 +170,25 @@ function fillSelect(id, items, defaultLabel) {
   });
 }
 
+// ── BH ROLE: NO FACULTY FILTER ACCESS ──────────────
+// BH is a center-level role (same level as CH/ACH) with exactly one
+// restriction: they cannot use the Faculty filter on Home or Batches.
+function canUseFacultyFilter() {
+  return !(user && user.role === 'BH');
+}
+
+// Hide every faculty filter group for BH users. Idempotent — safe to
+// call multiple times (initApp + each screen's populate function).
+function hideFacultyFilters() {
+  if (canUseFacultyFilter()) return;
+  ['homeFilterFaculty', 'filterFaculty'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const grp = el.closest('.filter-group');
+    if (grp) grp.style.display = 'none';
+  });
+}
+
 function scoreBadge(score) {
   if (score >= 75) return 'status-excellent';
   if (score >= 60) return 'status-good';

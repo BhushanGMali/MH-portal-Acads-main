@@ -39,6 +39,8 @@ async function loadHome() {
 }
 
 function populateHomeFilters() {
+  // BH role: no access to the faculty filter
+  hideFacultyFilters();
   // Center dropdown (role-scoped)
   const centers = accessibleCenters();
   fillSelect('homeFilterCenter', centers, 'All Centers');

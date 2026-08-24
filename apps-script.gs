@@ -6,7 +6,7 @@ const ADMIN_EMAIL = 'ambikesh.srivastava@pw.live';
 
 const HIERARCHY = {
   'Admin': 7, 'RAH': 6, 'RAOM': 5, 'CH/ACH': 4,
-  'JEE Head': 4, 'NEET Head': 4, 'AOM': 3, 'Subject Head': 2, 'Faculty': 1
+  'JEE Head': 4, 'NEET Head': 4, 'BH': 4, 'AOM': 3, 'Subject Head': 2, 'Faculty': 1
 };
 
 // Who approves a signup for each role (next level up)
@@ -22,7 +22,7 @@ const APPROVER_MAP = {
 };
 
 // Roles allowed to sign up via the portal
-const SIGNUP_ROLES = ['Faculty', 'Subject Head', 'AOM', 'CH/ACH', 'RAOM', 'RAH', 'JEE Head', 'NEET Head'];
+const SIGNUP_ROLES = ['Faculty', 'Subject Head', 'AOM', 'CH/ACH', 'RAOM', 'RAH', 'JEE Head', 'NEET Head', 'BH'];
 
 // ── ROUTER ────────────────────────────────────────────────
 function doGet(e) {
@@ -180,6 +180,22 @@ function findApproverEmail(approverRole) {
   return ADMIN_EMAIL;
 }
 
+// BH approvals are CENTER-SCOPED: the request goes to a CH/ACH who holds
+// one of the requested centers. If none of those centers has a CH/ACH,
+// the request falls back to the Admin.
+function findBHApprover(centers) {
+  const idRole = getSheet('ID-Role');
+  const wanted = (centers || []).map(c => String(c).toLowerCase().trim()).filter(Boolean);
+  for (const r of rows(idRole)) {
+    if (col(r, 2) !== 'CH/ACH') continue;
+    const chCenters = col(r, 1).toLowerCase().split(',').map(s => s.trim());
+    if (!wanted.some(w => chCenters.includes(w))) continue;
+    const candidate = col(r, 0).toLowerCase();
+    if (candidate && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(candidate)) return candidate;
+  }
+  return ADMIN_EMAIL;
+}
+
 // Valid center names = those present in the FBM sheet (column E).
 function validCenters() {
   const fbm = getSheet('FBM');
@@ -248,8 +264,12 @@ function handleSignup(e) {
     }
   }
 
-  // Determine approver (next level up), fall back to Admin
-  const approverEmail = findApproverEmail(APPROVER_MAP[role] || 'Admin');
+  // Determine approver (next level up), fall back to Admin.
+  // BH is special: approval goes to the CH/ACH of the selected center(s);
+  // if none of those centers has a CH/ACH, it goes to the Admin.
+  const approverEmail = (role === 'BH')
+    ? findBHApprover(centers)
+    : findApproverEmail(APPROVER_MAP[role] || 'Admin');
   const centerList = centers.join(', ');
 
   // Create approval request
@@ -485,8 +505,11 @@ function handleRequestCenterChange(e) {
     }
   }
 
-  // Determine approver (next level up), fall back to Admin
-  const approverEmail = findApproverEmail(APPROVER_MAP[user.role] || 'Admin');
+  // Determine approver (next level up), fall back to Admin.
+  // BH center-change requests also go to the CH/ACH of the new center(s).
+  const approverEmail = (user.role === 'BH')
+    ? findBHApprover(newCenters)
+    : findApproverEmail(APPROVER_MAP[user.role] || 'Admin');
 
   // Create request in CenterChanges sheet
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);

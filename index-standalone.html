@@ -203,7 +203,7 @@
                 <label class="center-opt center-opt-all"><input type="checkbox" id="signupCenterAll" onchange="toggleAllSignupCenters(this)"> <span>Select All</span></label>
               </div>
             </div>
-            <div class="signup-hint">Select one or more centers (multi-select for CH/ACH, AOM, JEE/NEET Head)</div>
+            <div class="signup-hint">Select one or more centers (multi-select for CH/ACH, AOM, JEE/NEET Head, BH)</div>
           </div>
           <div class="input-group">
             <label>ROLE</label>
@@ -938,6 +938,25 @@ function fillSelect(id, items, defaultLabel) {
   });
 }
 
+// ── BH ROLE: NO FACULTY FILTER ACCESS ──────────────
+// BH is a center-level role (same level as CH/ACH) with exactly one
+// restriction: they cannot use the Faculty filter on Home or Batches.
+function canUseFacultyFilter() {
+  return !(user && user.role === 'BH');
+}
+
+// Hide every faculty filter group for BH users. Idempotent — safe to
+// call multiple times (initApp + each screen's populate function).
+function hideFacultyFilters() {
+  if (canUseFacultyFilter()) return;
+  ['homeFilterFaculty', 'filterFaculty'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const grp = el.closest('.filter-group');
+    if (grp) grp.style.display = 'none';
+  });
+}
+
 function scoreBadge(score) {
   if (score >= 75) return 'status-excellent';
   if (score >= 60) return 'status-good';
@@ -1184,6 +1203,7 @@ function updateRoleHint() {
     'Faculty': 'Approval goes to your AOM',
     'Subject Head': 'Approval goes to your AOM',
     'AOM': 'Approval goes to your CH/ACH',
+    'BH': 'Approval goes to the CH/ACH of your center (or the Admin)',
     'CH/ACH': 'Approval goes to your RAOM',
     'RAOM': 'Approval goes to your RAH',
     'RAH': 'Approval goes to the Admin'
@@ -1237,6 +1257,8 @@ function initApp() {
   document.getElementById('userAvatar').textContent = user.email.charAt(0).toUpperCase();
   document.getElementById('topbarEmail').textContent = user.email;
   document.getElementById('topbarRole').textContent = user.role;
+  // BH role: hide the faculty filters (their only restriction)
+  hideFacultyFilters();
   dashData = null;
   batchesData = [];
   facultyData = [];
@@ -1984,6 +2006,8 @@ async function loadHome() {
 }
 
 function populateHomeFilters() {
+  // BH role: no access to the faculty filter
+  hideFacultyFilters();
   // Center dropdown (role-scoped)
   const centers = accessibleCenters();
   fillSelect('homeFilterCenter', centers, 'All Centers');
@@ -2770,6 +2794,8 @@ async function loadBatches() {
 }
 
 function populateBatchFilters() {
+  // BH role: no access to the faculty filter
+  hideFacultyFilters();
   const subjects = [...new Set(batchesData.flatMap(b => b.subjects || []))].sort();
   const faculty = [...new Set(batchesData.flatMap(b => (b.faculty || []).map(f => f.email)))].sort();
   fillSelect('filterSubject', subjects, 'All Subjects');

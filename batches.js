@@ -41,6 +41,8 @@ async function loadBatches() {
 }
 
 function populateBatchFilters() {
+  // BH role: no access to the faculty filter
+  hideFacultyFilters();
   const subjects = [...new Set(batchesData.flatMap(b => b.subjects || []))].sort();
   const faculty = [...new Set(batchesData.flatMap(b => (b.faculty || []).map(f => f.email)))].sort();
   fillSelect('filterSubject', subjects, 'All Subjects');

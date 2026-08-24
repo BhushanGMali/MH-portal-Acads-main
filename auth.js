@@ -199,6 +199,7 @@ function updateRoleHint() {
     'Faculty': 'Approval goes to your AOM',
     'Subject Head': 'Approval goes to your AOM',
     'AOM': 'Approval goes to your CH/ACH',
+    'BH': 'Approval goes to the CH/ACH of your center (or the Admin)',
     'CH/ACH': 'Approval goes to your RAOM',
     'RAOM': 'Approval goes to your RAH',
     'RAH': 'Approval goes to the Admin'
@@ -252,6 +253,8 @@ function initApp() {
   document.getElementById('userAvatar').textContent = user.email.charAt(0).toUpperCase();
   document.getElementById('topbarEmail').textContent = user.email;
   document.getElementById('topbarRole').textContent = user.role;
+  // BH role: hide the faculty filters (their only restriction)
+  hideFacultyFilters();
   dashData = null;
   batchesData = [];
   facultyData = [];
