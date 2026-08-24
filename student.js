@@ -41,6 +41,7 @@ function renderStuDetail(detail) {
   // ── Student info ──
   const tests = detail.history.length;
   const avg = tests > 0 ? +(detail.history.reduce((s, t) => s + t.pct, 0) / tests).toFixed(1) : 0;
+  const att = attendanceFor(detail.regno) || {};
   document.getElementById('studentDetailStats').innerHTML = `
     <div class="detail-stat"><div class="ds-value">${esc(detail.name || '—')}</div><div class="ds-label">Name</div></div>
     <div class="detail-stat"><div class="ds-value">${esc(detail.regno)}</div><div class="ds-label">Reg No</div></div>
@@ -48,6 +49,8 @@ function renderStuDetail(detail) {
     <div class="detail-stat"><div class="ds-value">${esc(detail.batch || '—')} <span class="batch-center">(${esc(batchCenterName(detail.batch))})</span></div><div class="ds-label">Batch</div></div>
     <div class="detail-stat"><div class="ds-value">${tests}</div><div class="ds-label">Tests</div></div>
     <div class="detail-stat"><div class="ds-value">${avg}%</div><div class="ds-label">Avg %</div></div>
+    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 + '%' : '—'}</div><div class="ds-label">Att (15 days)</div></div>
+    <div class="detail-stat"><div class="ds-value">${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att Overall</div></div>
   `;
 
   // ── Subject % graph (per test) ──

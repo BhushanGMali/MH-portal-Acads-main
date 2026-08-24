@@ -13,7 +13,8 @@
 const CSV_URLS = {
   tests:    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?output=csv&gid=475005675',
   fbm:      'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?output=csv&gid=0',
-  students: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?gid=93108683&single=true&output=csv'
+  students: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?gid=93108683&single=true&output=csv',
+  attendance: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQS5o-ytwI__9eubWvffSsHeCLSiV6ED9kaLa5tYWuoS7CIdfdEhZxMarJVBCT66DaP5JBwuYs_A77a/pub?gid=918061882&single=true&output=csv'
 };
 
 // Subject columns in the Test Result CSV (0-indexed)
@@ -22,7 +23,7 @@ const SUBJ_NAMES = ['physics', 'chemistry', 'maths', 'zoology', 'botany'];
 const SUBJ_LABELS = { physics: 'Physics', chemistry: 'Chemistry', maths: 'Maths', zoology: 'Zoology', botany: 'Botany' };
 
 // ── STATE ────────────────────────────────────────────
-let DATA = { tests: [], fbm: [], students: [], loaded: false, loading: false };
+let DATA = { tests: [], fbm: [], students: [], attendance: [], loaded: false, loading: false };
 
 // ── CSV PARSER (handles quoted fields, commas, escaped quotes) ──
 function parseCSV(text) {
@@ -73,16 +74,23 @@ function loadData(force) {
   if (DATA.loaded && !force) return Promise.resolve(DATA);
   if (DATA.loading) return DATA.loading;
   DATA.loading = (async () => {
-    const [tests, fbm, students] = await Promise.all([
+    const [tests, fbm, students, attendance] = await Promise.all([
       fetchCSV(CSV_URLS.tests),
       fetchCSV(CSV_URLS.fbm),
-      fetchCSV(CSV_URLS.students)
+      fetchCSV(CSV_URLS.students),
+      // Attendance sheet is optional — if it fails, the portal still works
+      // (attendance cells just show "—").
+      fetchCSV(CSV_URLS.attendance).catch(() => [])
     ]);
     DATA.tests = tests;
     DATA.fbm = fbm;
     DATA.students = students;
+    DATA.attendance = attendance;
     DATA.loaded = true;
     DATA.loading = false;
+    // Invalidate derived caches so a forced reload picks up fresh data.
+    _batchCenterMap = null;
+    _attMap = null;
     return DATA;
   })();
   return DATA.loading;
@@ -185,6 +193,45 @@ function batchCenterName(batch) {
     DATA.fbm.forEach(r => { if (r.Batch && !_batchCenterMap[r.Batch]) _batchCenterMap[r.Batch] = r.Center || ''; });
   }
   return _batchCenterMap[batch] || '';
+}
+
+// ── ATTENDANCE (regno → last-15-days % and overall %) ──
+// Source: published Attendance CSV (columns: reg_no, att % in last 15 days,
+// att % overall). Joined by reg_no at render time.
+let _attMap = null;
+function attendanceMap() {
+  if (_attMap) return _attMap;
+  _attMap = {};
+  const rows = DATA.attendance || [];
+  if (!rows.length) return _attMap;
+  // Detect column keys from the header row (robust to renames/reorders).
+  const keys = Object.keys(rows[0]);
+  const regKey = keys.find(k => /reg/i.test(k)) || keys[0];
+  const d15Key = keys.find(k => /15/.test(k)) || keys[1];
+  const overallKey = keys.find(k => /overall/i.test(k)) || keys[2];
+  for (const r of rows) {
+    const reg = String(r[regKey] == null ? '' : r[regKey]).trim();
+    if (!reg) continue;
+    const raw15 = String(r[d15Key] == null ? '' : r[d15Key]).trim();
+    const rawAll = String(r[overallKey] == null ? '' : r[overallKey]).trim();
+    _attMap[reg] = {
+      d15: raw15 === '' ? null : parseNum(raw15),
+      overall: rawAll === '' ? null : parseNum(rawAll)
+    };
+  }
+  return _attMap;
+}
+
+// Attendance for one student by regno → { d15, overall } or null.
+function attendanceFor(regno) {
+  return attendanceMap()[String(regno == null ? '' : regno).trim()] || null;
+}
+
+// Formatted attendance cell for tables ('—' when unknown).
+function attCell(v) {
+  return (v == null || isNaN(v))
+    ? '<span style="color:var(--pw-text-muted)">—</span>'
+    : '<span class="status-badge ' + scoreBadge(v) + '">' + v + '%</span>';
 }
 
 // ── HOME COMPUTATION ─────────────────────────────────
@@ -292,6 +339,7 @@ function computeHome(filters) {
     const a = stuAgg[reg];
     const lt = a.latest;
     const b = String(lt.current_batch || '').trim();
+    const att = attendanceFor(reg);
     return {
       regno: reg,
       name: String(lt.student_name || '').trim(),
@@ -301,6 +349,8 @@ function computeHome(filters) {
       avgUserScore: +(a.totalUserScore / a.count).toFixed(1), // Added avg userscore
       testCount: a.count,
       batchTotalTests: batchTestDates[b] ? batchTestDates[b].size : 0, // Added batch tests
+      att15: att ? att.d15 : null,
+      attOverall: att ? att.overall : null,
       physics: parseNum(lt.physics_marks),
       chemistry: parseNum(lt.chemistry_marks),
       maths: parseNum(lt.maths_marks),
