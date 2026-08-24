@@ -49,8 +49,7 @@ function renderStuDetail(detail) {
     <div class="detail-stat"><div class="ds-value">${esc(detail.batch || '—')} <span class="batch-center">(${esc(batchCenterName(detail.batch))})</span></div><div class="ds-label">Batch</div></div>
     <div class="detail-stat"><div class="ds-value">${tests}</div><div class="ds-label">Tests</div></div>
     <div class="detail-stat"><div class="ds-value">${avg}%</div><div class="ds-label">Avg %</div></div>
-    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 + '%' : '—'}</div><div class="ds-label">Att (15 days)</div></div>
-    <div class="detail-stat"><div class="ds-value">${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att Overall</div></div>
+    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 : '—'} / ${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att (15d/Overall)</div></div>
   `;
 
   // ── Subject % graph (per test) ──

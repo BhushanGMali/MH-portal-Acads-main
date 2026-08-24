@@ -132,8 +132,9 @@ function renderAbsentStudents(list) {
       <td>${esc(s.stream || '—')}</td>
       <td>${esc(s.batch || '—')}${s.batch ? `<span class="batch-center">(${esc(batchCenterName(s.batch))})</span>` : ''}</td>
       <td class="text-center"><span class="status-badge status-poor">${s.missed}</span></td>
+      <td class="text-center">${attCell(s.att15, s.attOverall)}</td>
     </tr>
-  `).join('') || '<tr><td colspan="6" class="empty-msg"><p>No absent students</p></td></tr>';
+  `).join('') || '<tr><td colspan="7" class="empty-msg"><p>No absent students</p></td></tr>';
 }
 
 // Batch-wise subject average table (Batch | Center | Avg | Phy | Chem | Math | Zoo | Bot)
@@ -169,8 +170,7 @@ function renderStudentTable(bodyId, students, n) {
     head.innerHTML = '<tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th>' +
       '<th class="text-center">Tests (Taken/Total)</th>' +
       '<th class="text-center">Avg Score / %</th>' +
-      '<th class="text-center">Att 15d</th>' +
-      '<th class="text-center">Att Overall</th>' +
+      '<th class="text-center">Att (15d/Overall)</th>' +
       subs.map(s => '<th class="text-center">' + SUBJ_LABELS[s] + '</th>').join('') + '</tr>';
   }
   const body = document.getElementById(bodyId);
@@ -184,11 +184,10 @@ function renderStudentTable(bodyId, students, n) {
       <td>${esc(s.batch || '—')}${s.batch ? `<span class="batch-center">(${esc(batchCenterName(s.batch))})</span>` : ''}</td>
       <td class="text-center">${s.testCount || 0} / ${s.batchTotalTests || 0}</td>
       <td class="text-center"><span class="status-badge ${scoreBadge(s.avg)}">${s.avgUserScore || 0} / ${s.avg}%</span></td>
-      <td class="text-center">${attCell(s.att15)}</td>
-      <td class="text-center">${attCell(s.attOverall)}</td>
+      <td class="text-center">${attCell(s.att15, s.attOverall)}</td>
       ${subs.map(sub => `<td class="text-center">${s[sub] > 0 ? s[sub] : '—'}</td>`).join('')}
     </tr>
-  `).join('') || '<tr><td colspan="' + (8 + subs.length) + '" class="empty-msg"><p>No data</p></td></tr>';
+  `).join('') || '<tr><td colspan="' + (7 + subs.length) + '" class="empty-msg"><p>No data</p></td></tr>';
 }
 
 // User changed the Top/Bottom N count — re-render just that table.
@@ -371,15 +370,15 @@ function tableExportData(key) {
     return {
       title: isTop ? 'Topper Students' : 'Bottom Performing Students',
       // Updated headers for downloads to match UI (merged + attendance columns)
-      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Tests (Taken/Total)', 'Avg Score / Avg %', 'Att 15d %', 'Att Overall %', ...subs.map(s => SUBJ_LABELS[s])],
-      rows: list.slice(0, n).map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, (s.testCount || 0) + '/' + (s.batchTotalTests || 0), (s.avgUserScore || 0) + ' / ' + s.avg + '%', s.att15 != null ? s.att15 + '%' : '', s.attOverall != null ? s.attOverall + '%' : '', ...subs.map(sub => s[sub] || '')])
+      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Tests (Taken/Total)', 'Avg Score / Avg %', 'Att % (15d/Overall)', ...subs.map(s => SUBJ_LABELS[s])],
+      rows: list.slice(0, n).map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, (s.testCount || 0) + '/' + (s.batchTotalTests || 0), (s.avgUserScore || 0) + ' / ' + s.avg + '%', (s.att15 != null ? s.att15 : '—') + '/' + (s.attOverall != null ? s.attOverall + '%' : '—'), ...subs.map(sub => s[sub] || '')])
     };
   }
   if (key === 'absent') {
     return {
       title: 'Absent Students',
-      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Center', 'Papers Not Given'],
-      rows: r.absentStudents.map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, batchCenterName(s.batch), s.missed])
+      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Papers Not Given', 'Att % (15d/Overall)'],
+      rows: r.absentStudents.map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, s.missed, (s.att15 != null ? s.att15 : '—') + '/' + (s.attOverall != null ? s.attOverall + '%' : '—')])
     };
   }
   if (key === 'batchAvg') {

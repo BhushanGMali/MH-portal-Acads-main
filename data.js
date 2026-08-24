@@ -227,11 +227,16 @@ function attendanceFor(regno) {
   return attendanceMap()[String(regno == null ? '' : regno).trim()] || null;
 }
 
-// Formatted attendance cell for tables ('—' when unknown).
-function attCell(v) {
-  return (v == null || isNaN(v))
-    ? '<span style="color:var(--pw-text-muted)">—</span>'
-    : '<span class="status-badge ' + scoreBadge(v) + '">' + v + '%</span>';
+// Formatted attendance cell for tables — ONE merged column:
+// "15d% / overall%" (e.g. "70 / 65.77%"), '—' when unknown.
+// Badge colour follows the overall % (falls back to 15d).
+function attCell(d15, overall) {
+  const ok15 = d15 != null && !isNaN(d15);
+  const okAll = overall != null && !isNaN(overall);
+  if (!ok15 && !okAll) return '<span style="color:var(--pw-text-muted)">—</span>';
+  const ref = okAll ? overall : d15;
+  return '<span class="status-badge ' + scoreBadge(ref) + '">' +
+    (ok15 ? d15 : '—') + ' / ' + (okAll ? overall + '%' : '—') + '</span>';
 }
 
 // ── HOME COMPUTATION ─────────────────────────────────
@@ -450,7 +455,8 @@ function computeHome(filters) {
     let missed = 0;
     for (const d of batchDates) if (!stuDates || !stuDates.has(d)) missed++;
     const info = studentInfo[reg] || {};
-    absentStudents.push({ regno: reg, name: info.name || '', stream: info.stream || '', batch: b, papers: 0, missed });
+    const att = attendanceFor(reg);
+    absentStudents.push({ regno: reg, name: info.name || '', stream: info.stream || '', batch: b, papers: 0, missed, att15: att ? att.d15 : null, attOverall: att ? att.overall : null });
   }
   absentStudents.sort((a, b) => b.missed - a.missed || (a.batch || '').localeCompare(b.batch || ''));
 

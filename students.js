@@ -30,7 +30,7 @@ async function loadStudents() {
 
 function renderStudentsEmpty(msg) {
   const tbody = document.getElementById('studentTableBody');
-  tbody.innerHTML = '<tr><td colspan="10"><div class="empty-msg"><p>' + msg + '</p></div></td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9"><div class="empty-msg"><p>' + msg + '</p></div></td></tr>';
 }
 
 function populateStudentFilters() {
@@ -59,7 +59,7 @@ function applyStudentFilters() {
 function renderStudents(list) {
   const tbody = document.getElementById('studentTableBody');
   if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="10"><div class="empty-msg"><div class="empty-icon">&#127891;</div><p>No students found</p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-msg"><div class="empty-icon">&#127891;</div><p>No students found</p></div></td></tr>';
     return;
   }
 
@@ -73,8 +73,7 @@ function renderStudents(list) {
       <td>${s.batch} <span class="batch-center">(${esc(batchCenterName(s.batch))})</span></td>
       <td class="text-center">${s.tests}</td>
       <td class="text-center">${s.avgScore != null ? '<strong>' + s.avgScore + '%</strong>' : '<span style="color:var(--pw-text-muted)">No tests</span>'}</td>
-      <td class="text-center">${attCell(att.d15)}</td>
-      <td class="text-center">${attCell(att.overall)}</td>
+      <td class="text-center">${attCell(att.d15, att.overall)}</td>
       <td>${s.bestSubject && s.bestSubject !== '—' ? '<span class="subject-tag ' + s.bestSubject.toLowerCase() + '">' + s.bestSubject + '</span>' : '—'}</td>
       <td><button class="btn-sm btn-view" onclick="viewStudentDetail('${esc(s.regno)}')">View</button></td>
     </tr>
@@ -111,8 +110,7 @@ function renderStudentDetail(d) {
     <div class="detail-stat"><div class="ds-value">${s.batch}</div><div class="ds-label">Batch</div></div>
     <div class="detail-stat"><div class="ds-value">${s.testsTaken}</div><div class="ds-label">Tests Taken</div></div>
     <div class="detail-stat"><div class="ds-value">${s.avgScore}%</div><div class="ds-label">Avg Score</div></div>
-    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 + '%' : '—'}</div><div class="ds-label">Att (15 days)</div></div>
-    <div class="detail-stat"><div class="ds-value">${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att Overall</div></div>
+    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 : '—'} / ${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att (15d/Overall)</div></div>
   `;
 
   const subjs = ['physics','chemistry','maths','zoology','botany'];
