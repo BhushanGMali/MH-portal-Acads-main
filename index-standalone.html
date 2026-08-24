@@ -2114,6 +2114,7 @@ function renderStudentTable(bodyId, students, n) {
     head.innerHTML = '<tr><th style="width:40px">#</th><th>Name</th><th>Stream</th><th>Batch</th>' +
       '<th class="text-center">Tests (Taken/Total)</th>' +
       '<th class="text-center">Avg Score / %</th>' +
+      '<th class="text-center">Att (15d/Overall)</th>' +
       subs.map(s => '<th class="text-center">' + SUBJ_LABELS[s] + '</th>').join('') + '</tr>';
   }
   const body = document.getElementById(bodyId);
@@ -2127,9 +2128,10 @@ function renderStudentTable(bodyId, students, n) {
       <td>${esc(s.batch || '—')}${s.batch ? `<span class="batch-center">(${esc(batchCenterName(s.batch))})</span>` : ''}</td>
       <td class="text-center">${s.testCount || 0} / ${s.batchTotalTests || 0}</td>
       <td class="text-center"><span class="status-badge ${scoreBadge(s.avg)}">${s.avgUserScore || 0} / ${s.avg}%</span></td>
+      <td class="text-center">${attCell(s.att15, s.attOverall)}</td>
       ${subs.map(sub => `<td class="text-center">${s[sub] > 0 ? s[sub] : '—'}</td>`).join('')}
     </tr>
-  `).join('') || '<tr><td colspan="' + (6 + subs.length) + '" class="empty-msg"><p>No data</p></td></tr>';
+  `).join('') || '<tr><td colspan="' + (7 + subs.length) + '" class="empty-msg"><p>No data</p></td></tr>';
 }
 
 // User changed the Top/Bottom N count — re-render just that table.
@@ -2311,16 +2313,16 @@ function tableExportData(key) {
     const n = parseInt(document.getElementById(isTop ? 'topperN' : 'bottomN').value, 10) || 10;
     return {
       title: isTop ? 'Topper Students' : 'Bottom Performing Students',
-      // Updated headers for downloads to match UI (merged columns)
-      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Tests (Taken/Total)', 'Avg Score / Avg %', ...subs.map(s => SUBJ_LABELS[s])],
-      rows: list.slice(0, n).map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, (s.testCount || 0) + '/' + (s.batchTotalTests || 0), (s.avgUserScore || 0) + ' / ' + s.avg + '%', ...subs.map(sub => s[sub] || '')])
+      // Updated headers for downloads to match UI (merged + attendance columns)
+      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Tests (Taken/Total)', 'Avg Score / Avg %', 'Att % (15d/Overall)', ...subs.map(s => SUBJ_LABELS[s])],
+      rows: list.slice(0, n).map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, (s.testCount || 0) + '/' + (s.batchTotalTests || 0), (s.avgUserScore || 0) + ' / ' + s.avg + '%', (s.att15 != null ? s.att15 : '—') + '/' + (s.attOverall != null ? s.attOverall + '%' : '—'), ...subs.map(sub => s[sub] || '')])
     };
   }
   if (key === 'absent') {
     return {
       title: 'Absent Students',
-      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Center', 'Papers Not Given'],
-      rows: r.absentStudents.map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, batchCenterName(s.batch), s.missed])
+      headers: ['#', 'Name', 'Reg No', 'Stream', 'Batch', 'Papers Not Given', 'Att % (15d/Overall)'],
+      rows: r.absentStudents.map((s, i) => [i + 1, s.name, s.regno, s.stream, s.batch, s.missed, (s.att15 != null ? s.att15 : '—') + '/' + (s.attOverall != null ? s.attOverall + '%' : '—')])
     };
   }
   if (key === 'batchAvg') {
@@ -2458,6 +2460,7 @@ function renderStuDetail(detail) {
   // ── Student info ──
   const tests = detail.history.length;
   const avg = tests > 0 ? +(detail.history.reduce((s, t) => s + t.pct, 0) / tests).toFixed(1) : 0;
+  const att = attendanceFor(detail.regno) || {};
   document.getElementById('studentDetailStats').innerHTML = `
     <div class="detail-stat"><div class="ds-value">${esc(detail.name || '—')}</div><div class="ds-label">Name</div></div>
     <div class="detail-stat"><div class="ds-value">${esc(detail.regno)}</div><div class="ds-label">Reg No</div></div>
@@ -2465,6 +2468,7 @@ function renderStuDetail(detail) {
     <div class="detail-stat"><div class="ds-value">${esc(detail.batch || '—')} <span class="batch-center">(${esc(batchCenterName(detail.batch))})</span></div><div class="ds-label">Batch</div></div>
     <div class="detail-stat"><div class="ds-value">${tests}</div><div class="ds-label">Tests</div></div>
     <div class="detail-stat"><div class="ds-value">${avg}%</div><div class="ds-label">Avg %</div></div>
+    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 : '—'} / ${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att (15d/Overall)</div></div>
   `;
 
   // ── Subject % graph (per test) ──
@@ -2988,6 +2992,11 @@ function renderFaculty(list) {
 
 async function loadStudents() {
   showLoading();
+  // Kick off the published-CSV load (attendance included) in parallel; once
+  // it arrives, re-render so attendance cells fill in.
+  loadData().then(() => {
+    if (currentView === 'students' && studentsData.length) applyStudentFilters();
+  }).catch(() => {});
   try {
     const resp = await apiGet('getStudents', { email: user.email, role: user.role, level: user.level, center: user.center });
     if (resp.success && resp.data.students) {
@@ -3006,7 +3015,7 @@ async function loadStudents() {
 
 function renderStudentsEmpty(msg) {
   const tbody = document.getElementById('studentTableBody');
-  tbody.innerHTML = '<tr><td colspan="8"><div class="empty-msg"><p>' + msg + '</p></div></td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9"><div class="empty-msg"><p>' + msg + '</p></div></td></tr>';
 }
 
 function populateStudentFilters() {
@@ -3035,11 +3044,13 @@ function applyStudentFilters() {
 function renderStudents(list) {
   const tbody = document.getElementById('studentTableBody');
   if (list.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-msg"><div class="empty-icon">&#127891;</div><p>No students found</p></div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-msg"><div class="empty-icon">&#127891;</div><p>No students found</p></div></td></tr>';
     return;
   }
 
-  tbody.innerHTML = list.map((s, i) => `
+  tbody.innerHTML = list.map((s, i) => {
+    const att = attendanceFor(s.regno) || {};
+    return `
     <tr>
       <td>${i + 1}</td>
       <td><strong>${s.name || '—'}</strong></td>
@@ -3047,10 +3058,11 @@ function renderStudents(list) {
       <td>${s.batch} <span class="batch-center">(${esc(batchCenterName(s.batch))})</span></td>
       <td class="text-center">${s.tests}</td>
       <td class="text-center">${s.avgScore != null ? '<strong>' + s.avgScore + '%</strong>' : '<span style="color:var(--pw-text-muted)">No tests</span>'}</td>
+      <td class="text-center">${attCell(att.d15, att.overall)}</td>
       <td>${s.bestSubject && s.bestSubject !== '—' ? '<span class="subject-tag ' + s.bestSubject.toLowerCase() + '">' + s.bestSubject + '</span>' : '—'}</td>
       <td><button class="btn-sm btn-view" onclick="viewStudentDetail('${esc(s.regno)}')">View</button></td>
     </tr>
-  `).join('');
+  `; }).join('');
 }
 
 // ── STUDENT DETAIL ─────────────────────────────────
@@ -3076,12 +3088,14 @@ async function viewStudentDetail(regno) {
 function renderStudentDetail(d) {
   const s = d.student;
   document.getElementById('stuDetailTitle').textContent = (s.name || s.regno) + ' — ' + s.batch;
+  const att = attendanceFor(s.regno) || {};
 
   document.getElementById('stuDetailStats').innerHTML = `
     <div class="detail-stat"><div class="ds-value">${s.regno}</div><div class="ds-label">Registration No</div></div>
     <div class="detail-stat"><div class="ds-value">${s.batch}</div><div class="ds-label">Batch</div></div>
     <div class="detail-stat"><div class="ds-value">${s.testsTaken}</div><div class="ds-label">Tests Taken</div></div>
     <div class="detail-stat"><div class="ds-value">${s.avgScore}%</div><div class="ds-label">Avg Score</div></div>
+    <div class="detail-stat"><div class="ds-value">${att.d15 != null ? att.d15 : '—'} / ${att.overall != null ? att.overall + '%' : '—'}</div><div class="ds-label">Att (15d/Overall)</div></div>
   `;
 
   const subjs = ['physics','chemistry','maths','zoology','botany'];
